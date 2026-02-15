@@ -2,21 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/camera_option"
+        android:id="@+id/camera_select_button"
+        android:icon="@drawable/camera_select_button"
+        android:title="@string/camera_select_button"
         android:checkable="false"
         android:enabled="true"
-        android:icon="@drawable/camera"
-        android:title="@string/camera"
-        android:visible="true" />
+        android:visible="true"
+        />
 
     <item
-        android:id="@+id/home_option"
-        android:icon="@drawable/home_pic"
-        android:title="home" />
+        android:id="@+id/home_select_button"
+        android:icon="@drawable/home_select_button"
+        android:title="@string/home_select_button"
+        android:checkable="false"
+        android:enabled="true"
+        android:visible="true"
+        />
 
     <item
-        android:id="@+id/search_option"
-        android:icon="@drawable/search_pic"
-        android:title="search" />
+        android:id="@+id/search_select_button"
+        android:icon="@drawable/search_select_button"
+        android:title="@string/search_select_button"
+        android:checkable="false"
+        android:enabled="true"
+        android:visible="true"
+        />
+
 
 </menu>

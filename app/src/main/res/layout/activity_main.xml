@@ -16,11 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    Allows for selection of the options to switch between fragments...-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_options"
+        app:itemIconTint="@null"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
