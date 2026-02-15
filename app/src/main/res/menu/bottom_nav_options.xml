@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/camera_option"
+        android:checkable="false"
+        android:enabled="true"
+        android:icon="@drawable/camera"
+        android:title="@string/camera"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/home_option"
+        android:icon="@drawable/home_pic"
+        android:title="home" />
+
+    <item
+        android:id="@+id/search_option"
+        android:icon="@drawable/search_pic"
+        android:title="search" />
+
+</menu>
