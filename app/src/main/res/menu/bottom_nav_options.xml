@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/camera_select_button"
+        android:icon="@drawable/camera_select_button"
+        android:title="@string/camera_select_button"
+        android:checkable="false"
+        android:enabled="true"
+        android:visible="true"
+        />
+
+    <item
+        android:id="@+id/home_select_button"
+        android:icon="@drawable/home_select_button"
+        android:title="@string/home_select_button"
+        android:checkable="false"
+        android:enabled="true"
+        android:visible="true"
+        />
+
+    <item
+        android:id="@+id/search_select_button"
+        android:icon="@drawable/search_select_button"
+        android:title="@string/search_select_button"
+        android:checkable="false"
+        android:enabled="true"
+        android:visible="true"
+        />
+
+
+</menu>
