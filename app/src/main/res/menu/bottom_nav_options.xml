@@ -28,5 +28,14 @@
         android:visible="true"
         />
 
+    <item
+        android:id="@+id/recent_select_button"
+        android:icon="@drawable/recent_select_button"
+        android:title="@string/recent_select_button"
+        android:checkable="false"
+        android:enabled="true"
+        android:visible="true"
+        />
+
 
 </menu>
