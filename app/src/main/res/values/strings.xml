@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">RecyclingApp</string>
-    <string name="camera">camera</string>
-    <string name="home_selection_option">home_selection_option</string>
-    <string name="search_selection_option">search_selection_option</string>
-    <string name="camera_select_button">camera_select_button</string>
-    <string name="home_select_button" />
-    <string name="search_select_button" />
+    <string name="camera_select_button">camera</string>
+    <string name="home_select_button">home</string>
+    <string name="search_select_button">search</string>
+    <string name="recent_select_button">recents</string>
 </resources>
