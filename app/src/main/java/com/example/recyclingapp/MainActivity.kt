@@ -1,6 +1,7 @@
 package com.example.recyclingapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,13 +11,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragments...
     //Use fragmentActivity for fragments!
+    private val mlogTag: String = "Main Activity";
+
+    /**
+     * Activity lifecycle methods
+     */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Log.d(mlogTag, "onCreate called!");
         setContentView(R.layout.activity_main)  //Set the main layout via activity_main...
 
         //Fragment manager to set screens!
@@ -80,5 +88,30 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
 
         }
 
+    }
+
+    override fun onStart(){
+        super.onStart()
+        Log.d(mlogTag, "onStart called!");
+    }
+
+    override fun onResume(){
+        super.onResume()
+        Log.d(mlogTag, "onResume called!");
+    }
+
+    override fun onPause(){
+        super.onPause();
+        Log.d(mlogTag, "onPause called!");
+    }
+
+    override fun onStop(){
+        super.onStop();
+        Log.d(mlogTag, "onStop called!");
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(mlogTag, "onDestroy called!");
     }
 }
