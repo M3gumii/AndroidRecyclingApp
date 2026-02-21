@@ -10,9 +10,12 @@
         android:id="@+id/login_fragment">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_width="103dp"
+            android:layout_height="108dp"
+            android:src="@drawable/recycle"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="30dp"
+            android:layout_gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,27 +24,31 @@
             android:textSize="22sp"
             android:layout_gravity="center"/>
 
-        <Button
-            android:id="@+id/loginButton"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_height="wrap_content"
-            android:text="@string/loginButtontext"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/green"/>
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_marginBottom="60dp"
+            >
 
-        <Button
-            android:id="@+id/skipButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/skipButtonText"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/green"/>
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/loginButtontext"
+                android:backgroundTint="@color/green"/>
+
+            <Button
+                android:id="@+id/skipButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/skipButtonText"
+                android:backgroundTint="@color/green"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 
