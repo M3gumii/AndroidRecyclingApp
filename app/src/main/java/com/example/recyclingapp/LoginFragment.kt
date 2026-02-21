@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
@@ -29,12 +30,21 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
         val loginButton: Button = view.findViewById<Button>(R.id.loginButton);
         val skipButton: Button = view.findViewById<Button>(R.id.skipButton);
+        val userBox : EditText = view.findViewById<EditText>(R.id.usernameBox);
+        val passBox : EditText = view.findViewById<EditText>(R.id.passwordBox);
+        val createAccountButton: Button = view.findViewById<Button>(R.id.createAccountButton);
 
         loginButton.setOnClickListener{
             Log.d(mlogTag, "LOGIN CLICKED!")
+            //TODO - confirm user and pass ok!
         }
         skipButton.setOnClickListener {
             Log.d(mlogTag, "SKIP CLICKED!")
+            //TODO - set to go to home!
+        }
+        createAccountButton.setOnClickListener {
+            Log.d(mlogTag, "CREATE ACCOUNT CLICKED!")
+            //TODO - make the account!
         }
     }
 
