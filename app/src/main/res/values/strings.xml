@@ -4,4 +4,6 @@
     <string name="home_select_button">home</string>
     <string name="search_select_button">search</string>
     <string name="recent_select_button">recents</string>
+    <string name="loginButtontext">Login</string>
+    <string name="skipButtonText">Skip</string>
 </resources>
