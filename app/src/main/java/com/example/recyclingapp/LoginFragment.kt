@@ -32,6 +32,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         val skipButton: Button = view.findViewById<Button>(R.id.skipButton);
         val userBox : EditText = view.findViewById<EditText>(R.id.usernameBox);
         val passBox : EditText = view.findViewById<EditText>(R.id.passwordBox);
+        val createAccountButton: Button = view.findViewById<Button>(R.id.createAccountButton);
 
         loginButton.setOnClickListener{
             Log.d(mlogTag, "LOGIN CLICKED!")
@@ -40,6 +41,10 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         skipButton.setOnClickListener {
             Log.d(mlogTag, "SKIP CLICKED!")
             //TODO - set to go to home!
+        }
+        createAccountButton.setOnClickListener {
+            Log.d(mlogTag, "CREATE ACCOUNT CLICKED!")
+            //TODO - make the account!
         }
     }
 

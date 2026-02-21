@@ -65,6 +65,17 @@
                     android:layout_margin="15dp"
                     android:hint="Password" />
 
+                <Button
+                    android:id="@+id/createAccountButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:textSize="13sp"
+                    android:background="null"
+                    android:textStyle="italic"
+                    android:text="Create Account"
+                    android:backgroundTint="@color/green"/>
+
             </LinearLayout>
 
             <Button
