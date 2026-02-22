@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 
 class SearchFragment : Fragment(R.layout.search_fragment) {
 
+
     private val mlogTag: String = "Login Fragment";
 
     override fun onCreateView(
