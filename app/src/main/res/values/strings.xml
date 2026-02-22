@@ -8,4 +8,9 @@
     <string name="skipButtonText">Skip</string>
     <string name="loginScreenDescription">Sustainable recycling for Columbus, OH</string>
     <string name="create_account_text">Create Account</string>
+    <string name="home_screen_title">Columbus Recycle</string>
+    <string name="home_user_info_placeholder">Welcome to the Columbus Recycle app! Learn about how to recycle food packaging by scanning the barcode!</string>
+    <string name="home_username_placeholder">Login to see User Stats</string>
+    <string name="num_items_scanned">Num Items Scanned:</string>
+    <string name="home_websites_block_title">Columbus Recycling Page</string>
 </resources>
