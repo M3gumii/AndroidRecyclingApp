@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
-class SearchFragment : Fragment(R.layout.login_fragment) {
+class SearchFragment : Fragment(R.layout.search_fragment) {
 
     private val mlogTag: String = "Login Fragment";
 
