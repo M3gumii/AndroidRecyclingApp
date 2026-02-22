@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
                     if(currentFragment !is HomeFragment ){
                         //Use addToBackStack to allow the user to return to the previous fragment...
-                        fm.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit();
+                        fm.beginTransaction().replace(R.id.fragment_container, HomeFragment()).addToBackStack(null).commit();
                     }
                 }
                 R.id.search_select_button -> {
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
                     if(currentFragment !is SearchFragment ){
                         //Use addToBackStack to allow the user to return to the previous fragment...
-                        fm.beginTransaction().replace(R.id.fragment_container, SearchFragment()).commit();
+                        fm.beginTransaction().replace(R.id.fragment_container, SearchFragment()).addToBackStack(null).commit();
                     }
                 }
                 R.id.camera_select_button -> {
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
                     if(currentFragment !is CameraFragment ){
                         //Use addToBackStack to allow the user to return to the previous fragment...
-                        fm.beginTransaction().replace(R.id.fragment_container, CameraFragment()).commit();
+                        fm.beginTransaction().replace(R.id.fragment_container, CameraFragment()).addToBackStack(null).commit();
                     }
 
                 }
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
                     if(currentFragment !is RecentFragment ){
                         //Use addToBackStack to allow the user to return to the previous fragment...
-                        fm.beginTransaction().replace(R.id.fragment_container, RecentFragment()).commit();
+                        fm.beginTransaction().replace(R.id.fragment_container, RecentFragment()).addToBackStack(null).commit();
                     }
                 }
             }
