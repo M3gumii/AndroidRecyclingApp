@@ -7,4 +7,5 @@
     <string name="loginButtontext">Login</string>
     <string name="skipButtonText">Skip</string>
     <string name="loginScreenDescription">Sustainable recycling for Columbus, OH</string>
+    <string name="create_account_text">Create Account</string>
 </resources>
