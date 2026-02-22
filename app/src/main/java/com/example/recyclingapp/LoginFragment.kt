@@ -40,11 +40,13 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         }
         skipButton.setOnClickListener {
             Log.d(mlogTag, "SKIP CLICKED!")
-            //TODO - set to go to home!
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+                HomeFragment()).addToBackStack(null).commit();
         }
         createAccountButton.setOnClickListener {
             Log.d(mlogTag, "CREATE ACCOUNT CLICKED!")
-            //TODO - make the account!
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+                AccountCreationFragment()).commit();
         }
     }
 

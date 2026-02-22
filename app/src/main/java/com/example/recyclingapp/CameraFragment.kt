@@ -20,6 +20,11 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(mlogTag, "onViewCreated called!")
+    }
+
     override fun onDestroyView(){
         super.onDestroyView()
         Log.d(mlogTag, "onDestroyView called!");
