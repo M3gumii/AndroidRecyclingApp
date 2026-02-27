@@ -14,15 +14,15 @@ scanning!
 SUPABASE DB CONNECTION
 ----------------------------------------------------------------------
 
-Supabase (REST API) 
-      ↓
-Retrofit (API interface, defines endpoints) 
-      ↓
-OkHttpClient (sends request, adds headers, handles network) 
-      ↓
-Moshi (converts JSON → Kotlin objects) 
-      ↓
-Kotlin (your data classes, ready to use in app)
+**Supabase (REST API)**  
+↓  
+**Retrofit** – Defines API
+↓  
+**OkHttpClient** – Sends requests, attaches headers, handles networking  
+↓  
+**Moshi** – Converts JSON responses into Kotlin objects  
+↓  
+**Kotlin Data Classes** – Ready to use inside the app, 1 for each table!
 
 ----------------------------------------------------------------------
 
