@@ -87,7 +87,17 @@ interface SupabaseApi {
      */
     @GET("rest/v1/PreviousSearches")
     suspend fun getSearchByUser(
-        @Query("username") barcode: String,
+        @Query("username") username: String,
+        @Query("select") select: String = "*"
+    ): List<PreviousSearch>
+
+    /*
+    Get user searched item
+     */
+    @GET("rest/v1/PreviousSearches")
+    suspend fun getSearchByUserAndBarcode(
+        @Query("username") username: String,
+        @Query("barcode") barcode: String,
         @Query("select") select: String = "*"
     ): List<PreviousSearch>
 
