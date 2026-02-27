@@ -10,6 +10,8 @@ import com.example.recyclingapp.fragments.LoginFragment
 import com.example.recyclingapp.fragments.RecentFragment
 import com.example.recyclingapp.fragments.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragments...
     //Use fragmentActivity for fragments!
@@ -21,9 +23,20 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         Log.d(mlogTag, "onCreate called!");
         setContentView(R.layout.activity_main)  //Set the main layout via activity_main...
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_selection_options)
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNav) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                view.paddingTop,
+                view.paddingRight,
+                systemBars.bottom
+            )
+            insets
+        }
 
         //Fragment manager to set screens!
         val fm = supportFragmentManager;
@@ -44,7 +57,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
          */
 
         //Sets up the bottom button selection options to switch screens...
-        botNavView.setOnItemReselectedListener{ selection ->
+        botNavView.setOnItemSelectedListener{ selection ->
             when(selection.itemId){ //Use when (java if p much) to select what to swap to!
                 R.id.home_select_button -> {    //Send to home screen!
                     System.out.println("HOME SELECTED!!")
@@ -83,8 +96,9 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                     }
                 }
             }
-
+            true
         }
+
 
     }
 
