@@ -1,4 +1,4 @@
-package com.example.recyclingapp
+package com.example.recyclingapp.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.recyclingapp.R
 
 class AccountCreationFragment : Fragment(R.layout.account_creation_fragment) {
     private val mlogTag: String = "Account Creation Fragment";

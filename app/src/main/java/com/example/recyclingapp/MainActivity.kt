@@ -2,16 +2,14 @@ package com.example.recyclingapp
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
+import com.example.recyclingapp.fragments.CameraFragment
+import com.example.recyclingapp.fragments.HomeFragment
+import com.example.recyclingapp.fragments.LoginFragment
+import com.example.recyclingapp.fragments.RecentFragment
+import com.example.recyclingapp.fragments.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragments...
     //Use fragmentActivity for fragments!
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                 R.id.home_select_button -> {    //Send to home screen!
                     System.out.println("HOME SELECTED!!")
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
-                    if(currentFragment !is HomeFragment ){
+                    if(currentFragment !is HomeFragment){
                         //Use addToBackStack to allow the user to return to the previous fragment...
                         fm.beginTransaction().replace(R.id.fragment_container, HomeFragment()).addToBackStack(null).commit();
                     }
@@ -60,7 +58,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                     //Send to search screen
                     System.out.println("SEARCH SELECTED!!");
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
-                    if(currentFragment !is SearchFragment ){
+                    if(currentFragment !is SearchFragment){
                         //Use addToBackStack to allow the user to return to the previous fragment...
                         fm.beginTransaction().replace(R.id.fragment_container, SearchFragment()).addToBackStack(null).commit();
                     }
@@ -69,7 +67,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
                     //send to camera scanning screen
                     System.out.println("CAMERA SELECTED!!");
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
-                    if(currentFragment !is CameraFragment ){
+                    if(currentFragment !is CameraFragment){
                         //Use addToBackStack to allow the user to return to the previous fragment...
                         fm.beginTransaction().replace(R.id.fragment_container, CameraFragment()).addToBackStack(null).commit();
                     }
@@ -79,7 +77,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
 
                     System.out.println("RECENTS SELECTED!!");
                     currentFragment = fm.findFragmentById(R.id.fragment_container);
-                    if(currentFragment !is RecentFragment ){
+                    if(currentFragment !is RecentFragment){
                         //Use addToBackStack to allow the user to return to the previous fragment...
                         fm.beginTransaction().replace(R.id.fragment_container, RecentFragment()).addToBackStack(null).commit();
                     }

@@ -1,4 +1,4 @@
-package com.example.recyclingapp
+package com.example.recyclingapp.fragments
 
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import com.example.recyclingapp.R
 
 class HomeFragment : Fragment(R.layout.home_fragment) {
 
