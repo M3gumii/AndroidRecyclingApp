@@ -1,4 +1,4 @@
-package com.example.recyclingapp
+package com.example.recyclingapp.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import com.example.recyclingapp.R
 
 class LoginFragment : Fragment(R.layout.login_fragment) {
 
@@ -40,12 +40,14 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         }
         skipButton.setOnClickListener {
             Log.d(mlogTag, "SKIP CLICKED!")
-            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+            requireActivity().supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
                 HomeFragment()).addToBackStack(null).commit();
         }
         createAccountButton.setOnClickListener {
             Log.d(mlogTag, "CREATE ACCOUNT CLICKED!")
-            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+            requireActivity().supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
                 AccountCreationFragment()).commit();
         }
     }
