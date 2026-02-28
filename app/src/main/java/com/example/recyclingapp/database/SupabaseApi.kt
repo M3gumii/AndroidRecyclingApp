@@ -4,6 +4,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -40,6 +41,13 @@ interface SupabaseApi {
     @DELETE("rest/vs/Users")
     suspend fun deleteUser(
         @Query("username") username: String
+    ): List<User>
+
+    @Headers("Prefer return=representation")
+    @PATCH("rest/vs/Users/{username}") //Update one field of the user!
+    suspend fun updateUserRecyclingCount(
+        @Query("username") username: String,
+        @Body body: Map<String, Int>    //Updating the count by the int provided!
     ): List<User>
 
     /**

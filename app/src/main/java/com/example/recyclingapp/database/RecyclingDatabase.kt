@@ -12,6 +12,13 @@ class RecyclingDatabase(private val api: SupabaseApi) {
     suspend fun deleteUser(username: String): User? = api.deleteUser(username).firstOrNull();
     suspend fun addUser(user: User): User? = api.insertUser(user).firstOrNull();
     suspend fun getAllUsers(): List<User> = api.getAllUsers();
+    suspend fun updateUserCount(username: String): User? {  //Adds 1 to the user recycling count.
+        var usr = getUser(username);
+        if(usr != null){
+            usr = api.updateUserRecyclingCount(username, mapOf("num_items_recycled" to (usr.num_items_recycled + 1))).firstOrNull();
+        }
+        return usr;
+    };
 
     /**
      * Package functions
