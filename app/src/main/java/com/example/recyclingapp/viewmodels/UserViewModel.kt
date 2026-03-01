@@ -14,6 +14,10 @@ import kotlinx.coroutines.launch
  */
 class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
 
+    //Needed for comparison.
+    var attemptedUsername: String? = null
+    var attemptedPassword: String? = null
+
     /**
      * All users
      */
@@ -32,10 +36,12 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
         }
     }
 
-    fun loadUser(username: String) {
-        viewModelScope.launch {
-            _selectedUser.value = repo.getUser(username)
-            Log.d("UserViewModel", "user gained!" + _selectedUser.toString())
+    fun loadUser() {
+        attemptedUsername?.let {    //Run if username not null
+            viewModelScope.launch {
+                _selectedUser.value = repo.getUser(attemptedUsername!!) //!! forces to non null. If not crashes prog.
+                Log.d("UserViewModel", "user gained!" + _selectedUser.value?.username)
+            }
         }
     }
 

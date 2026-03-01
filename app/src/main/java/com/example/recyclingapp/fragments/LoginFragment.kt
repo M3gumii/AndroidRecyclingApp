@@ -46,8 +46,6 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         val passBox : EditText = view.findViewById<EditText>(R.id.passwordBox);
         val createAccountButton: Button = view.findViewById<Button>(R.id.createAccountButton);
 
-        var username: String? = null;
-        var pass: String? = null;
 
         //Make sure the fragment observes the viewModel!
         userViewModel.selectedUser.observe(viewLifecycleOwner) { user ->
@@ -55,7 +53,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
             //If selected user changes, check if valid!
             if (user != null) { //Check for validity!
                 Log.d(mlogTag, "User loaded: $user")
-                if(user.username.equals(username) && user.password.equals(pass)){
+                if(userViewModel.attemptedPassword.equals(user.password)){
                     Log.d(mlogTag, "USR FOUND: " + user.username);
                     //send to home screen as user was entered!
                     requireActivity().supportFragmentManager.beginTransaction().replace(
@@ -70,11 +68,9 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
 
         loginButton.setOnClickListener{
             Log.d(mlogTag, "LOGIN CLICKED!")
-            username = userBox.text.toString();
-            pass = passBox.text.toString();
-            if(username != null && pass != null) {
-                userViewModel.loadUser(username.toString());    //Will set off our observer!
-            }
+            userViewModel.attemptedUsername = userBox.text.toString();
+            userViewModel.attemptedPassword = passBox.text.toString();
+            userViewModel.loadUser();    //Will set off our observer!
         }
 
         skipButton.setOnClickListener {
