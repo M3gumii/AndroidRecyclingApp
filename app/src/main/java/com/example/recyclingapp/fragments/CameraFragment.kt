@@ -17,6 +17,15 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import android.app.AlertDialog
+import com.bumptech.glide.Glide
+import android.widget.ImageView
+import android.widget.TextView
 
 class CameraFragment : Fragment(R.layout.camera_fragment) {
     private val mlogTag: String = "Camera Fragment";
@@ -128,9 +137,16 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                                 val upc = barcode.rawValue
                                 Log.d(mlogTag, "UPC Found: $upc")
 
-                                // TODO: Query Supabase database here
-
                                 imageAnalyzer.clearAnalyzer() // Stop scanning after first match
+
+                                // TODO: Query Supabase database here
+                                // Placeholder for DB check (always false for now)
+                                val foundInDatabase = false
+
+                                if (!foundInDatabase) {
+                                    callUpcApi(upc!!)
+                                }
+
                                 break
                             }
                         }
@@ -165,5 +181,108 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
             requireContext(),
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun callUpcApi(upc: String) {
+
+        Log.d(mlogTag, "Calling UPCitemdb API for $upc")
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.upcitemdb.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(
+            com.example.recyclingapp.network.UpcApiService::class.java
+        )
+
+        service.lookupUpc(upc).enqueue(object : Callback<com.example.recyclingapp.network.UpcResponse> {
+
+            override fun onResponse(
+                call: Call<com.example.recyclingapp.network.UpcResponse>,
+                response: Response<com.example.recyclingapp.network.UpcResponse>
+            ) {
+
+                if (response.isSuccessful && response.body()?.items?.isNotEmpty() == true) {
+
+                    val item = response.body()!!.items[0]
+
+                    val title = item.title ?: "Unknown"
+                    val brand = item.brand ?: "Unknown"
+                    val upc = item.upc ?: "Unknown"
+                    val weight = item.weight ?: "Unknown"
+                    val category = item.category ?: "Unknown"
+                    val imageUrl = item.images?.firstOrNull { it.startsWith("https") }
+
+                    Log.d("IMAGE_DEBUG", "Image URL: $imageUrl")
+
+                    showConfirmationDialog(title, brand, upc, imageUrl)
+
+                } else {
+                    Log.d(mlogTag, "UPC not found in API")
+                    navigateToNotFound(upc)
+                }
+            }
+
+            override fun onFailure(call: Call<com.example.recyclingapp.network.UpcResponse>, t: Throwable) {
+                Log.e(mlogTag, "API call failed", t)
+            }
+        })
+    }
+
+    private fun showConfirmationDialog(
+        title: String,
+        brand: String,
+        upc: String,
+        imageUrl: String?
+    ) {
+
+        val dialogView = layoutInflater.inflate(
+            R.layout.dialog_item_confirmation,
+            null
+        )
+
+        val imageView = dialogView.findViewById<ImageView>(R.id.productImage)
+        val titleView = dialogView.findViewById<TextView>(R.id.productTitle)
+        val brandView = dialogView.findViewById<TextView>(R.id.productBrand)
+        val upcView = dialogView.findViewById<TextView>(R.id.productUpc)
+
+        titleView.text = title
+        brandView.text = "Brand: $brand"
+        upcView.text = "UPC: $upc"
+
+        if (!imageUrl.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(imageUrl)
+                .into(imageView)
+        } else {
+            imageView.visibility = View.GONE
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setPositiveButton("Yes") { _, _ ->
+                // TODO: Later save to Supabase
+            }
+
+            .setNegativeButton("No") { _, _ ->
+                navigateToNotFound(upc)
+            }
+
+            .show()
+    }
+
+    private fun navigateToNotFound(upc: String) {
+
+        val fragment = ItemNotFoundFragment()
+
+        val bundle = Bundle()
+        bundle.putString("UPC", upc)
+        fragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
