@@ -1,24 +1,40 @@
 package com.example.recyclingapp.database
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import okhttp3.Interceptor
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 /**
  * Connects to the online supabase db!
+ * Used to gain access to the API -> Retrofit etc!
  *
  * Converts the JSON from REST requests to kotlin objects using
  * Moshi.
  */
 object SupabaseConnection {
 
+    val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    /**
+     * REQUIRED FOR MOSHI TO PARSE KOTLIN DATA CLASSES
+     */
+    private val moshi: Moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())   // <-- Required for Kotlin data classes!
+        .build()
+
     /**
      * Creates a reusable interceptor instance! Made at runtime via the lambda...
      * Adds supabase API keys, etc. to each request made to the db...
      */
     private val authInterceptor: Interceptor = Interceptor { httpReq ->
-        val convertedReq = httpReq.request().newBuilder().addHeader("apiKey", SupabaseConfig.SUPABASE_API_KEY)
+        val convertedReq = httpReq.request().newBuilder()
+            .addHeader("apiKey", SupabaseConfig.SUPABASE_API_KEY)
             .addHeader("Authorization", "Bearer ${SupabaseConfig.SUPABASE_API_KEY}")
             .addHeader("Content-Type", "application/json")
             .build()
@@ -30,8 +46,9 @@ object SupabaseConnection {
      * Used to make the Http calls!
      */
     private val okHttp: OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(authInterceptor).build();
-
+        .addInterceptor(authInterceptor)
+        .addInterceptor(logging)
+        .build()
 
     /**
      * Main API helper!
@@ -41,7 +58,7 @@ object SupabaseConnection {
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(SupabaseConfig.SUPABASE_URL)
         .client(okHttp)
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         // Converterfactory used to convert the json to kotlin objects using Moshi.
         .build();
 
@@ -53,6 +70,4 @@ object SupabaseConnection {
      * access the db!
      */
     val api: SupabaseApi = retrofit.create<SupabaseApi>(SupabaseApi::class.java);
-
-
 }

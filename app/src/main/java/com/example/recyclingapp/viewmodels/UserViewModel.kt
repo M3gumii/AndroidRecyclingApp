@@ -1,5 +1,6 @@
 package com.example.recyclingapp.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,7 +35,12 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
     fun loadUser(username: String) {
         viewModelScope.launch {
             _selectedUser.value = repo.getUser(username)
+            Log.d("UserViewModel", "user gained!" + _selectedUser.toString())
         }
+    }
+
+    fun clearUser(){
+        _selectedUser.value = null;
     }
 
     fun addUser(username: String, password: String, email: String) {

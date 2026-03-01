@@ -1,5 +1,4 @@
 package com.example.recyclingapp.fragments
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,12 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.recyclingapp.R
+import com.example.recyclingapp.viewmodels.UserViewModel
+import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import com.example.recyclingapp.MainActivity
+import com.example.recyclingapp.database.User
 
 class LoginFragment : Fragment(R.layout.login_fragment) {
 
     private val mlogTag: String = "Login Fragment";
+
+    /**
+     * View model
+     */
+    private val userViewModel: UserViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,16 +46,44 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         val passBox : EditText = view.findViewById<EditText>(R.id.passwordBox);
         val createAccountButton: Button = view.findViewById<Button>(R.id.createAccountButton);
 
+        var username: String? = null;
+        var pass: String? = null;
+
+        //Make sure the fragment observes the viewModel!
+        userViewModel.selectedUser.observe(viewLifecycleOwner) { user ->
+            Log.d(mlogTag, user?.username.toString())
+            //If selected user changes, check if valid!
+            if (user != null) { //Check for validity!
+                Log.d(mlogTag, "User loaded: $user")
+                if(user.username.equals(username) && user.password.equals(pass)){
+                    Log.d(mlogTag, "USR FOUND: " + user.username);
+                    //send to home screen as user was entered!
+                    requireActivity().supportFragmentManager.beginTransaction().replace(
+                        R.id.fragment_container,
+                        HomeFragment()).addToBackStack(null).commit();
+                }else{  //Notify user of invalid login.
+                    Toast.makeText(requireContext(), "Invalid user/pass.\nPlease try again", Toast.LENGTH_SHORT).show();
+                    userViewModel.clearUser();  //Non match for password...
+                }
+            }
+        }
+
         loginButton.setOnClickListener{
             Log.d(mlogTag, "LOGIN CLICKED!")
-            //TODO - confirm user and pass ok!
+            username = userBox.text.toString();
+            pass = passBox.text.toString();
+            if(username != null && pass != null) {
+                userViewModel.loadUser(username.toString());    //Will set off our observer!
+            }
         }
+
         skipButton.setOnClickListener {
             Log.d(mlogTag, "SKIP CLICKED!")
             requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
                 HomeFragment()).addToBackStack(null).commit();
         }
+
         createAccountButton.setOnClickListener {
             Log.d(mlogTag, "CREATE ACCOUNT CLICKED!")
             requireActivity().supportFragmentManager.beginTransaction().replace(

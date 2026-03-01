@@ -27,9 +27,9 @@ interface SupabaseApi {
      */
     @GET("rest/v1/Users")
     suspend fun getUser(
-        @Query("username") username: String,    //Gets everything with username = string provided..
+        @Query("username") username: String,
         @Query("select") select: String = "*"
-    ): List<User>   //Always returns a list...
+    ): List<User>
 
     @Headers("Prefer: return=representation")   //Return inserted user in the resp...
     @POST("rest/v1/Users")
@@ -37,17 +37,17 @@ interface SupabaseApi {
         @Body user: User    //Sends the user object in the body of the request!
     ): List<User>
 
-    @Headers("Prefer return=representation")
-    @DELETE("rest/vs/Users")
+    @Headers("Prefer: return=representation")
+    @DELETE("rest/v1/Users")
     suspend fun deleteUser(
         @Query("username") username: String
     ): List<User>
 
-    @Headers("Prefer return=representation")
-    @PATCH("rest/vs/Users/{username}") //Update one field of the user!
+    @Headers("Prefer: return=representation")
+    @PATCH("rest/v1/Users")
     suspend fun updateUserRecyclingCount(
         @Query("username") username: String,
-        @Body body: Map<String, Int>    //Updating the count by the int provided!
+        @Body body: Map<String, Int>
     ): List<User>
 
     /**
@@ -75,7 +75,7 @@ interface SupabaseApi {
     ): List<Package>
 
     @Headers("Prefer return=representation")
-    @DELETE("rest/vs/Packages")
+    @DELETE("rest/v1/Packages")
     suspend fun deletePackage(
         @Query("barcode") barcode: String
     ): List<Package>
@@ -119,7 +119,7 @@ interface SupabaseApi {
     Removes the previous search via barcode and username.
      */
     @Headers("Prefer return=representation")
-    @DELETE("rest/vs/PreviousSearches")
+    @DELETE("rest/v1/PreviousSearches")
     suspend fun deleteSearch(
         @Query("barcode") barcode: String,
         @Query("username") username: String
