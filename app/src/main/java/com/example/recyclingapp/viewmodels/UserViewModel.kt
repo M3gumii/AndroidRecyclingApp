@@ -1,5 +1,6 @@
 package com.example.recyclingapp.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,10 @@ import kotlinx.coroutines.launch
  * Allows for the fragment to update the repo through this!
  */
 class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
+
+    //Needed for comparison.
+    var attemptedUsername: String? = null
+    var attemptedPassword: String? = null
 
     /**
      * All users
@@ -31,10 +36,17 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
         }
     }
 
-    fun loadUser(username: String) {
-        viewModelScope.launch {
-            _selectedUser.value = repo.getUser(username)
+    fun loadUser() {
+        attemptedUsername?.let {    //Run if username not null
+            viewModelScope.launch {
+                _selectedUser.value = repo.getUser(attemptedUsername!!) //!! forces to non null. If not crashes prog.
+                Log.d("UserViewModel", "user gained!" + _selectedUser.value?.username)
+            }
         }
+    }
+
+    fun clearUser(){
+        _selectedUser.value = null;
     }
 
     fun addUser(username: String, password: String, email: String) {

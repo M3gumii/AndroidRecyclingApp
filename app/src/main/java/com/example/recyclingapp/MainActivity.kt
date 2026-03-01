@@ -1,8 +1,8 @@
 package com.example.recyclingapp
-
+import com.example.recyclingapp.viewmodels.AppViewModelFactory
+import androidx.activity.viewModels
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recyclingapp.fragments.CameraFragment
 import com.example.recyclingapp.fragments.HomeFragment
@@ -12,10 +12,28 @@ import com.example.recyclingapp.fragments.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.recyclingapp.database.RecyclingDatabase
+import com.example.recyclingapp.database.SupabaseConnection
+import com.example.recyclingapp.viewmodels.PackageViewModel
+import com.example.recyclingapp.viewmodels.PreviousSearchViewModel
+import com.example.recyclingapp.viewmodels.UserViewModel
 
 class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragments...
     //Use fragmentActivity for fragments!
     private val mlogTag: String = "Main Activity";
+
+    //Connect via the api connection we made in our singleton!
+    private val repo: RecyclingDatabase = RecyclingDatabase(SupabaseConnection.api);
+    //Creates the var only once when needed later. (by lazy)
+    val appViewModelFactory by lazy { AppViewModelFactory(repo) }
+
+    /**
+     * VIEW MODELS
+     */
+    //Uses the custome viewModelFactory! -> Tells to use what db instance as a param!
+    private val userViewModel: UserViewModel by viewModels { appViewModelFactory }  //Returns the userViewModel w/ the db constructor!
+    private val packageViewModel: PackageViewModel by viewModels{ appViewModelFactory }
+    private val previousSearchViewModel: PreviousSearchViewModel by viewModels { appViewModelFactory }
 
     /**
      * Activity lifecycle methods
@@ -50,7 +68,6 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
          * COMPONENTS
          */
         var botNavView: BottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_selection_options);
-
 
         /**
          * LISTENERS
