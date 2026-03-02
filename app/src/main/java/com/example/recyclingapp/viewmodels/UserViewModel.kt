@@ -60,15 +60,17 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
      */
     fun addUser(username: String, password: String, email: String) {
         viewModelScope.launch {
+            //Check if the user already exists with that username or email...
             val existingUser = repo.getUser(username)
             val existingEmail = repo.getUserByEmail(email)
 
             when {
-                existingUser != null -> _addUserResult.value = 1
-                existingEmail != null -> _addUserResult.value = 2
-                else -> {
+                existingUser != null -> _addUserResult.value = 1    //Username used
+                existingEmail != null -> _addUserResult.value = 2   //email used...
+                else -> {   //Free to add!
                     val newUser = User(username, password, email)   //we can add in the new user!
                     repo.addUser(newUser)
+                    _selectedUser.value = newUser
                     _addUserResult.value = 0
                 }
             }

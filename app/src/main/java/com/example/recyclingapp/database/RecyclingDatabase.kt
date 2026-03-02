@@ -12,7 +12,7 @@ class RecyclingDatabase(private val api: SupabaseApi) {
         api.getUser("eq.$username").firstOrNull()   //Makes a call to the db through the api connection!
 
     suspend fun getUserByEmail(email: String): User? =
-        api.getUser("email=eq.$email").firstOrNull()
+        api.getUserByEmail("eq.$email").firstOrNull()
 
     suspend fun deleteUser(username: String): User? =
         api.deleteUser("eq.$username").firstOrNull()

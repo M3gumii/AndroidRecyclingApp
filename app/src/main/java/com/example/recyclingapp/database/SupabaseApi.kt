@@ -3,6 +3,7 @@ package com.example.recyclingapp.database
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -37,10 +38,13 @@ interface SupabaseApi {
         @Query("select") select: String = "*"
     ): List<User>
 
-    @Headers("Prefer: return=representation")   //Return inserted user in the resp...
+    @Headers(
+        "Content-Type: application/json",
+        "Prefer: return=representation"
+    )
     @POST("rest/v1/Users")
     suspend fun insertUser(
-        @Body user: User    //Sends the user object in the body of the request!
+        @Body user: User
     ): List<User>
 
     @Headers("Prefer: return=representation")
