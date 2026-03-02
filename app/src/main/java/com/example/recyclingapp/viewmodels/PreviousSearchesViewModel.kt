@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  *
  * Previous searches specific to the user!
  */
-class PreviousSearchViewModel(private val repo: RecyclingDatabase) : ViewModel() {
+class PreviousSearchesViewModel(private val repo: RecyclingDatabase) : ViewModel() {
 
     /**
      * Get previous searches!

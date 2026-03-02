@@ -29,8 +29,8 @@ class AppViewModelFactory(
             modelClass.isAssignableFrom(PackageViewModel::class.java) ->
                 PackageViewModel(repo) as T
 
-            modelClass.isAssignableFrom(PreviousSearchViewModel::class.java) ->
-                PreviousSearchViewModel(repo) as T
+            modelClass.isAssignableFrom(PreviousSearchesViewModel::class.java) ->
+                PreviousSearchesViewModel(repo) as T
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: $modelClass")
         }
