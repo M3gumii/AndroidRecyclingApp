@@ -7,11 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
+import com.example.recyclingapp.database.User
+import com.example.recyclingapp.viewmodels.UserViewModel
+import kotlin.getValue
 
 class AccountCreationFragment : Fragment(R.layout.account_creation_fragment) {
     private val mlogTag: String = "Account Creation Fragment";
+
+    /**
+     * View model
+     */
+    private val userViewModel: UserViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,8 +44,30 @@ class AccountCreationFragment : Fragment(R.layout.account_creation_fragment) {
         val passwordBox: EditText = view.findViewById<EditText>(R.id.password_box);
         val emailBox: EditText = view.findViewById<EditText>(R.id.email_box);
 
-        //TODO - on submit, verify w db and if user not present, add in with info from boxes!
-        //(All must be not null...)
+        userViewModel.addUserResult.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                0 -> {
+                    Toast.makeText(requireContext(), "Added user!", Toast.LENGTH_SHORT).show()
+                    requireActivity().supportFragmentManager.beginTransaction().replace(
+                        R.id.fragment_container,
+                        HomeFragment()).addToBackStack(null).commit();
+                }
+                1 -> Toast.makeText(requireContext(), "Username already in use.", Toast.LENGTH_SHORT).show()
+                2 -> Toast.makeText(requireContext(), "Email already in use.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        submitButton.setOnClickListener {
+            val username = usernameBox.text.toString()
+            val password = passwordBox.text.toString()
+            val email = emailBox.text.toString()
+            if(!username.isBlank() && !password.isBlank() && !email.isBlank()){
+                userViewModel.attemptedUsername = username; //Check for username used...
+                userViewModel.attemptedPassword = password;
+                userViewModel.attemptedEmail = email;
+                userViewModel.addUser(username, password, email)
+            }
+        }
     }
 
     override fun onDestroyView(){

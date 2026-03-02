@@ -31,6 +31,12 @@ interface SupabaseApi {
         @Query("select") select: String = "*"
     ): List<User>
 
+    @GET("rest/v1/Users")
+    suspend fun getUserByEmail(
+        @Query("email") email: String,
+        @Query("select") select: String = "*"
+    ): List<User>
+
     @Headers("Prefer: return=representation")   //Return inserted user in the resp...
     @POST("rest/v1/Users")
     suspend fun insertUser(

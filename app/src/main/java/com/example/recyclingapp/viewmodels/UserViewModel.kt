@@ -17,6 +17,10 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
     //Needed for comparison.
     var attemptedUsername: String? = null
     var attemptedPassword: String? = null
+    var attemptedEmail: String? = null
+
+    private val _addUserResult = MutableLiveData<Int>()
+    val addUserResult: LiveData<Int> = _addUserResult
 
     /**
      * All users
@@ -49,11 +53,25 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
         _selectedUser.value = null;
     }
 
+    /**
+     * 1 == username faulty
+     * 2 == email faulty
+     * -1 == user added
+     */
     fun addUser(username: String, password: String, email: String) {
         viewModelScope.launch {
-            val user = User(username, password, email)
-            repo.addUser(user)
-            _users.value = repo.getAllUsers()
+            val existingUser = repo.getUser(username)
+            val existingEmail = repo.getUserByEmail(email)
+
+            when {
+                existingUser != null -> _addUserResult.value = 1
+                existingEmail != null -> _addUserResult.value = 2
+                else -> {
+                    val newUser = User(username, password, email)   //we can add in the new user!
+                    repo.addUser(newUser)
+                    _addUserResult.value = 0
+                }
+            }
         }
     }
 
