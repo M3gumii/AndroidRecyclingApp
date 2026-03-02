@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.recyclingapp.database.RecyclingDatabase
 import com.example.recyclingapp.database.SupabaseConnection
 import com.example.recyclingapp.viewmodels.PackageViewModel
-import com.example.recyclingapp.viewmodels.PreviousSearchViewModel
+import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
 import com.example.recyclingapp.viewmodels.UserViewModel
 
 class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragments...
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
     //Uses the custome viewModelFactory! -> Tells to use what db instance as a param!
     private val userViewModel: UserViewModel by viewModels { appViewModelFactory }  //Returns the userViewModel w/ the db constructor!
     private val packageViewModel: PackageViewModel by viewModels{ appViewModelFactory }
-    private val previousSearchViewModel: PreviousSearchViewModel by viewModels { appViewModelFactory }
+    private val previousSearchViewModel: PreviousSearchesViewModel by viewModels { appViewModelFactory }
 
     /**
      * Activity lifecycle methods

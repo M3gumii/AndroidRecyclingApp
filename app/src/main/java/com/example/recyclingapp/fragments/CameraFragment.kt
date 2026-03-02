@@ -13,6 +13,11 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
+import androidx.fragment.app.activityViewModels
+import com.example.recyclingapp.MainActivity
+import com.example.recyclingapp.viewmodels.PackageViewModel
+import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.UserViewModel
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -29,6 +34,19 @@ import android.widget.TextView
 
 class CameraFragment : Fragment(R.layout.camera_fragment) {
     private val mlogTag: String = "Camera Fragment";
+
+    /**
+     * View models
+     */
+    private val userViewModel: UserViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
+    private val packageViewModel: PackageViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
+    private val previousSearchesViewModel: PreviousSearchesViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
 
     private lateinit var previewView: PreviewView
     private val cameraExecutor = Executors.newSingleThreadExecutor()
@@ -134,8 +152,28 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
 
                             for (barcode in barcodes) {
 
-                                val upc = barcode.rawValue
-                                Log.d(mlogTag, "UPC Found: $upc")
+                                val upc = barcode.rawValue  //Get the 12 dig num for the barcode!
+                                if (upc != null){
+                                    Log.d(mlogTag, "UPC Found: $upc")
+
+                                    // TODO: Query Supabase database here
+                                    packageViewModel.getPackage(upc);
+                                    if(packageViewModel.selectedPackage.value == null){
+                                        //Package match not available!
+
+
+                                    }else{  //Package match found! Send to the item info screen!
+
+                                        if(userViewModel.selectedUser.value != null){   //add to user searches if logged in
+                                            previousSearchesViewModel.addSearch(userViewModel.selectedUser.value!!.username, upc)
+                                            userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
+                                        }
+
+                                        requireActivity().supportFragmentManager.beginTransaction().replace(
+                                            R.id.fragment_container,
+                                            ItemDisplayFragment()).addToBackStack(null).commit();
+
+                                    }
 
                                 imageAnalyzer.clearAnalyzer() // Stop scanning after first match
 
