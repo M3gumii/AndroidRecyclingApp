@@ -48,8 +48,6 @@ class ItemDisplayFragment : Fragment(R.layout.item_display_layout) {
         var image: ImageView = view.findViewById<ImageView>(R.id.item_image)
         var isRecyclable: TextView = view.findViewById<TextView>(R.id.item_recyclable)
 
-        packageViewModel.getPackage("036000291452")
-
         /**
          * If there is some item selected, then the data should be filled in!
          */
