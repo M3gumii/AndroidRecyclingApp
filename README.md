@@ -28,7 +28,8 @@ SUPABASE DB CONNECTION
 ↓  
 **Kotlin Data Classes** – Ready to use inside the app, 1 for each table!
 
-<img width="945" height="628" alt="image" src="https://github.com/user-attachments/assets/b25a0a47-ca05-4403-b8d5-de00f9c7c38d" />
+<img width="824" height="552" alt="image" src="https://github.com/user-attachments/assets/78a58bce-8801-48df-93fe-153755080b59" />
+
 
 Previous Searches only keeps the latest 10 inserts by a user via Supabase Postgres triggers.
 
