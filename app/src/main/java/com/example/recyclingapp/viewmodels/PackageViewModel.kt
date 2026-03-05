@@ -59,6 +59,12 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
         }
     }
 
+    fun clearSelectedPackage(){
+        viewModelScope.launch {
+            _selectedPackage.value = null;
+        }
+    }
+
     fun getPackage(barcode: String){
         viewModelScope.launch {
             _selectedPackage.value = repo.getPackage(barcode);

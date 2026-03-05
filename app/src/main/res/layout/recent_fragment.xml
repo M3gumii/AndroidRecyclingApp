@@ -6,12 +6,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recents_fragment">
+        android:id="@+id/recents_fragment"
+        android:orientation="vertical">
 
         <TextView
+            android:background="@color/green"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="RECENTS FRAGMENT"/>
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:text="@string/home_screen_title"
+            android:textStyle="bold"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 

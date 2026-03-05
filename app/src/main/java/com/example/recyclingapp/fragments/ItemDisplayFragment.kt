@@ -71,6 +71,7 @@ class ItemDisplayFragment : Fragment(R.layout.item_display_layout) {
             requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
                 HomeFragment()).addToBackStack(null).commit();
+            packageViewModel.clearSelectedPackage();
         }
     }
 

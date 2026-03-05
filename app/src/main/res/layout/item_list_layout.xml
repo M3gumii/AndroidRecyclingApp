@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--        Header-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green"
+            android:padding="10dp"
+            android:text="@string/home_screen_title"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!--        List-->
+        <Button
+            style="@style/NoCorners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:padding="10dp"
+            android:text="placeholder"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textColor="@color/dark_grey"
+            android:backgroundTint="@color/shade"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/closeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/green"
+        android:text="Close"
+        android:layout_margin="12dp"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        tools:layout_editor_absoluteY="679dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
