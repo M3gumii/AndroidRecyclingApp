@@ -24,6 +24,9 @@ SUPABASE DB CONNECTION
 ↓  
 **Kotlin Data Classes** – Ready to use inside the app, 1 for each table!
 
+<img width="945" height="628" alt="image" src="https://github.com/user-attachments/assets/b25a0a47-ca05-4403-b8d5-de00f9c7c38d" />
+
+
 ----------------------------------------------------------------------
 
 
