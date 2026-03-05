@@ -6,13 +6,76 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/item_display_fragment">
+        android:id="@+id/item_display_fragment"
+        android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="ITEM DISPLAY FRAGMENT"/>
+            android:orientation="vertical"
+            android:id="@+id/login_fragment"
+            android:layout_margin="12dp">
 
+            <ImageView
+                android:layout_width="103dp"
+                android:layout_height="108dp"
+                android:src="@drawable/recycle"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scanned_item_name_placeholder"
+                android:textSize="22sp"
+                android:layout_gravity="center"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:layout_height="2dp"
+                android:background="@color/light_grey" />
+
+    <!--        Item info-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical"
+                android:layout_marginBottom="12dp"
+                >
+
+
+    <!--            Item info!-->
+
+                <TextView
+                    android:id="@+id/item_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Here is your item details..."/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="bottom"
+                android:layout_weight="1"
+                >
+
+                <Button
+                    android:id="@+id/closeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/green"
+                    android:text="Close" />
+            </LinearLayout>
+
+
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

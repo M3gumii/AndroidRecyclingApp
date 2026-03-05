@@ -13,4 +13,5 @@
     <string name="home_username_placeholder">Login to see User Stats</string>
     <string name="num_items_scanned">Num Items Scanned:</string>
     <string name="home_websites_block_title">Columbus Recycling Page</string>
+    <string name="scanned_item_name_placeholder">Item Name</string>
 </resources>
