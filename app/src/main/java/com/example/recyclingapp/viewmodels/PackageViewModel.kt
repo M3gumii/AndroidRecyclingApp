@@ -35,14 +35,16 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
         barcode: String,
         name: String,
         recycling_pos: Boolean = false,
-        image_link: String? = null
+        image_link: String? = null,
+        description: String? = null
     ) {
         viewModelScope.launch {
             val newPackage = Package(
                 barcode = barcode,
                 name = name,
                 recycling_pos = recycling_pos,
-                image_link = image_link
+                image_link = image_link,
+                description = description
             )
 
             repo.addPackage(newPackage)
