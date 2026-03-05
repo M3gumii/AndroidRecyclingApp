@@ -14,4 +14,5 @@
     <string name="num_items_scanned">Num Items Scanned:</string>
     <string name="home_websites_block_title">Columbus Recycling Page</string>
     <string name="scanned_item_name_placeholder">Item Name</string>
+    <string name="recyclability_placeholder">Recyclability</string>
 </resources>
