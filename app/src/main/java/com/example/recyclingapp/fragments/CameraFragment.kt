@@ -153,39 +153,46 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                             for (barcode in barcodes) {
 
                                 val upc = barcode.rawValue  //Get the 12 dig num for the barcode!
-                                if (upc != null){
+                                if (upc != null) {
                                     Log.d(mlogTag, "UPC Found: $upc")
 
                                     // TODO: Query Supabase database here
                                     packageViewModel.getPackage(upc);
-                                    if(packageViewModel.selectedPackage.value == null){
+                                    if (packageViewModel.selectedPackage.value == null) {
                                         //Package match not available!
 
 
-                                    }else{  //Package match found! Send to the item info screen!
+                                    } else {  //Package match found! Send to the item info screen!
 
-                                        if(userViewModel.selectedUser.value != null){   //add to user searches if logged in
-                                            previousSearchesViewModel.addSearch(userViewModel.selectedUser.value!!.username, upc)
+                                        if (userViewModel.selectedUser.value != null) {   //add to user searches if logged in
+                                            previousSearchesViewModel.addSearch(
+                                                userViewModel.selectedUser.value!!.username,
+                                                upc
+                                            )
                                             userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
                                         }
 
-                                        requireActivity().supportFragmentManager.beginTransaction().replace(
-                                            R.id.fragment_container,
-                                            ItemDisplayFragment()).addToBackStack(null).commit();
+                                        requireActivity().supportFragmentManager.beginTransaction()
+                                            .replace(
+                                                R.id.fragment_container,
+                                                ItemDisplayFragment()
+                                            ).addToBackStack(null).commit();
 
                                     }
 
-                                imageAnalyzer.clearAnalyzer() // Stop scanning after first match
+                                    imageAnalyzer.clearAnalyzer() // Stop scanning after first match
 
-                                // TODO: Query Supabase database here
-                                // Placeholder for DB check (always false for now)
-                                val foundInDatabase = false
 
-                                if (!foundInDatabase) {
-                                    callUpcApi(upc!!)
+                                    // TODO: Query Supabase database here
+                                    // Placeholder for DB check (always false for now)
+                                    val foundInDatabase = false
+
+                                    if (!foundInDatabase) {
+                                        callUpcApi(upc!!)
+                                    }
+
+                                    break
                                 }
-
-                                break
                             }
                         }
                         .addOnFailureListener {
