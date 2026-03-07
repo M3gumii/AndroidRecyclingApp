@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,6 +58,7 @@ class RecentFragment : Fragment(R.layout.recent_fragment) {
         Log.d(mlogTag, "onViewCreated called!")
 
         val closeButton: Button = view.findViewById<Button>(R.id.closeButton)
+        val userNotLoggedInLayout: LinearLayout = view.findViewById<LinearLayout>(R.id.logged_out_text_box)
 
         //Set up the adapter to init to an empty list...
         adapter = RecentItemAdapter(emptyList()) { recentClicked -> //On the clicking of an item, send to the item screen!
@@ -75,10 +77,14 @@ class RecentFragment : Fragment(R.layout.recent_fragment) {
 
         userViewModel.selectedUser.observe(viewLifecycleOwner){ user ->
             if (user != null){
+                userNotLoggedInLayout.visibility = View.GONE
                 previousSearchesViewModel.getSearchesByUsername(user.username)
                 previousSearchesViewModel.searches.observe(viewLifecycleOwner){ items ->
                     adapter.updateItems(items)
                 }
+            }else{
+                //No user present!
+                userNotLoggedInLayout.visibility = View.VISIBLE
             }
         }
 

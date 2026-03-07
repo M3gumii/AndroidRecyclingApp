@@ -26,6 +26,26 @@
             android:textSize="22sp"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:id="@+id/logged_out_text_box"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="Please log in to see\nrecently searched items!"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:background="@color/shade"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recent_item_recycler_view"
             android:layout_width="match_parent"
