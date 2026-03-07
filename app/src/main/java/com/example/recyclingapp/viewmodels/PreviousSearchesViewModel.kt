@@ -3,8 +3,8 @@ package com.example.recyclingapp.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.recyclingapp.database.RecyclingDatabase
-import com.example.recyclingapp.database.PreviousSearch
+import com.example.recyclingapp.dataClasses.RecyclingDatabase
+import com.example.recyclingapp.dataClasses.PreviousSearch
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
@@ -45,9 +45,9 @@ class PreviousSearchesViewModel(private val repo: RecyclingDatabase) : ViewModel
         }
     }
 
-    fun addSearch(username: String, barcode: String) {
+    fun addSearch(username: String, barcode: String, name: String) {
         viewModelScope.launch {
-            val newSearch = PreviousSearch(username, barcode)
+            val newSearch = PreviousSearch(username, barcode, name)
             repo.addSearch(newSearch)
             _searches.value = repo.getSearchesByUsername(username)
         }

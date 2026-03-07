@@ -10,10 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.recyclingapp.R
 import com.example.recyclingapp.viewmodels.UserViewModel
-import androidx.fragment.app.viewModels
 import androidx.fragment.app.activityViewModels
 import com.example.recyclingapp.MainActivity
-import com.example.recyclingapp.database.User
 
 class LoginFragment : Fragment(R.layout.login_fragment) {
 

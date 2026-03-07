@@ -12,8 +12,8 @@ import com.example.recyclingapp.fragments.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.recyclingapp.database.RecyclingDatabase
-import com.example.recyclingapp.database.SupabaseConnection
+import com.example.recyclingapp.dataClasses.RecyclingDatabase
+import com.example.recyclingapp.dataClasses.SupabaseConnection
 import com.example.recyclingapp.viewmodels.PackageViewModel
 import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
 import com.example.recyclingapp.viewmodels.UserViewModel

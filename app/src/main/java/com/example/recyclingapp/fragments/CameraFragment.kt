@@ -165,9 +165,12 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                                     } else {  //Package match found! Send to the item info screen!
 
                                         if (userViewModel.selectedUser.value != null) {   //add to user searches if logged in
+                                            packageViewModel.getPackage(upc)    //Get from the db!
+
                                             previousSearchesViewModel.addSearch(
                                                 userViewModel.selectedUser.value!!.username,
-                                                upc
+                                                upc,
+                                                packageViewModel.selectedPackage.value!!.name
                                             )
                                             userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
                                         }

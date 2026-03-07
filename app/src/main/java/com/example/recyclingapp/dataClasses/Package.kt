@@ -1,4 +1,4 @@
-package com.example.recyclingapp.database
+package com.example.recyclingapp.dataClasses
 
 class Package (
     val barcode: String,

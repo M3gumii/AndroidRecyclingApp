@@ -6,12 +6,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
+import com.example.recyclingapp.dataClasses.RecentItemAdapter
+import com.example.recyclingapp.viewmodels.PackageViewModel
+import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.UserViewModel
+import java.util.Collections.list
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.getValue
 
 class RecentFragment : Fragment(R.layout.recent_fragment) {
 
 
     private val mlogTag: String = "Recents Fragment";
+
+    /**
+     * View model
+     */
+    private val userViewModel: UserViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
+    private val previousSearchesViewModel: PreviousSearchesViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
+    private val packageViewModel: PackageViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
+
+    /**
+     * Adapter used to fill in selectable recent items...
+     */
+    lateinit var adapter: RecentItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +54,30 @@ class RecentFragment : Fragment(R.layout.recent_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(mlogTag, "onViewCreated called!")
+
+        //Set up the adapter to init to an empty list...
+        adapter = RecentItemAdapter(emptyList()) { recentClicked -> //On the clicking of an item, send to the item screen!
+            packageViewModel.getPackage(recentClicked.barcode)
+            //send to package view screen
+            requireActivity().supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
+                ItemDisplayFragment()).addToBackStack(null).commit();
+        }
+
+        //Set up the recycler view
+        val recyclerView: RecyclerView = view.findViewById<RecyclerView>(R.id.recent_item_recycler_view)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        userViewModel.selectedUser.observe(viewLifecycleOwner){ user ->
+            if (user != null){
+                previousSearchesViewModel.getSearchesByUsername(user.username)
+                previousSearchesViewModel.searches.observe(viewLifecycleOwner){ items ->
+                    adapter.updateItems(items)
+                }
+            }
+        }
+
     }
 
     override fun onDestroyView(){

@@ -1,4 +1,4 @@
-package com.example.recyclingapp.database
+package com.example.recyclingapp.dataClasses
 
 /**
  * Wraps the API calls for easy access!

@@ -1,4 +1,4 @@
-package com.example.recyclingapp.database
+package com.example.recyclingapp.dataClasses
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
