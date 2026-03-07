@@ -10,6 +10,8 @@ import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
 import com.example.recyclingapp.dataClasses.RecentItemAdapter
@@ -67,6 +69,11 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
                 R.id.fragment_container,
                 ItemDisplayFragment()).addToBackStack(null).commit();
         }
+
+        //set up the recycler.
+        val recycler: RecyclerView = view.findViewById<RecyclerView>(R.id.possible_search_items)
+        recycler.adapter = adapter
+        recycler.layoutManager = LinearLayoutManager(requireContext())
 
         search_item_name.doOnTextChanged { text, _, _, _ -> //As user types stuff in, bring up pos items!
             val currentText = text.toString().lowercase()
