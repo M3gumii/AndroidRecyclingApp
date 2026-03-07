@@ -118,10 +118,14 @@ interface SupabaseApi {
         @Query("select") select: String = "*"
     ): List<PreviousSearch>
 
-    @Headers("Prefer: return=representation")
+    @Headers(
+        "Content-Type: application/json",
+        "Prefer: return=representation, resolution=merge-duplicates"
+    )
     @POST("rest/v1/PreviousSearches")
     suspend fun insertSearch(
-        @Body search: PreviousSearch
+        @Body search: PreviousSearch,
+        @Query("on_conflict") onConflict: String = "username,barcode"
     ): List<PreviousSearch>
 
     /*

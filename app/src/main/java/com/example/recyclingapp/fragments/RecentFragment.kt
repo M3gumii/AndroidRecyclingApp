@@ -61,13 +61,22 @@ class RecentFragment : Fragment(R.layout.recent_fragment) {
         val userNotLoggedInLayout: LinearLayout = view.findViewById<LinearLayout>(R.id.logged_out_text_box)
 
         //Set up the adapter to init to an empty list...
-        adapter = RecentItemAdapter(emptyList()) { recentClicked -> //On the clicking of an item, send to the item screen!
-            packageViewModel.getPackage(recentClicked.barcode)  //Set the package to the clicked item!
+        adapter = RecentItemAdapter(emptyList()) { recentClicked ->
+            val user = userViewModel.selectedUser.value
+            if (user != null) {
+                previousSearchesViewModel.addSearch(
+                    user.username,
+                    recentClicked.barcode,
+                    recentClicked.name_of_item
+                )
+            }
 
-            //send to package view screen
-            requireActivity().supportFragmentManager.beginTransaction().replace(
-                R.id.fragment_container,
-                ItemDisplayFragment()).addToBackStack(null).commit();
+            packageViewModel.getPackage(recentClicked.barcode)
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ItemDisplayFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         //Set up the recycler view

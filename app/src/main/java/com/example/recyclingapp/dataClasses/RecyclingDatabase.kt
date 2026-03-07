@@ -1,5 +1,8 @@
 package com.example.recyclingapp.dataClasses
 
+import android.util.Log
+import retrofit2.HttpException
+
 /**
  * Wraps the API calls for easy access!
  */
