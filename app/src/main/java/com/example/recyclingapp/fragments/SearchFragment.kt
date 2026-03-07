@@ -63,7 +63,6 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         //Set up the adapter to init to an empty list...
         adapter = SearchAdapter(emptyList()) { searchSelected -> //On the clicking of an item, send to the item screen!
             packageViewModel.getPackage(searchSelected.barcode)  //Set the package to the clicked item!
-
             //send to package view screen
             requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
