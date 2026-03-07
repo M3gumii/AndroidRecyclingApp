@@ -51,10 +51,10 @@ class ItemDisplayFragment : Fragment(R.layout.item_display_layout) {
         /**
          * If there is some item selected, then the data should be filled in!
          */
-        packageViewModel.selectedPackage.observe(viewLifecycleOwner){
+        packageViewModel.selectedPackage.observe(viewLifecycleOwner){   //Use ? as cleared when close pressed.
             description.text = packageViewModel.selectedPackage.value?.description;
-            name.text = packageViewModel.selectedPackage.value!!.name;  //Always a name
-            isRecyclable.text = "Recyclable: " + packageViewModel.selectedPackage.value!!.recycling_pos.toString();
+            name.text = packageViewModel.selectedPackage.value?.name;  //Always a name
+            isRecyclable.text = "Recyclable: " + packageViewModel.selectedPackage.value?.recycling_pos.toString();
             if(packageViewModel.selectedPackage.value?.image_link != null) {    //Load the image using coil if present...
                 image.load(packageViewModel.selectedPackage.value!!.image_link){
                     crossfade(true)

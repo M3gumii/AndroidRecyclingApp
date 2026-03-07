@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,9 +56,12 @@ class RecentFragment : Fragment(R.layout.recent_fragment) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(mlogTag, "onViewCreated called!")
 
+        val closeButton: Button = view.findViewById<Button>(R.id.closeButton)
+
         //Set up the adapter to init to an empty list...
         adapter = RecentItemAdapter(emptyList()) { recentClicked -> //On the clicking of an item, send to the item screen!
-            packageViewModel.getPackage(recentClicked.barcode)
+            packageViewModel.getPackage(recentClicked.barcode)  //Set the package to the clicked item!
+
             //send to package view screen
             requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
@@ -76,6 +80,12 @@ class RecentFragment : Fragment(R.layout.recent_fragment) {
                     adapter.updateItems(items)
                 }
             }
+        }
+
+        closeButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
+                HomeFragment()).addToBackStack(null).commit();
         }
 
     }
