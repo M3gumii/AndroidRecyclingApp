@@ -15,6 +15,7 @@ import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
 import com.example.recyclingapp.viewmodels.UserViewModel
 import kotlin.getValue
+import kotlin.math.log
 
 class HomeFragment : Fragment(R.layout.home_fragment) {
 
@@ -47,6 +48,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         val userNameBox = view.findViewById<TextView>(R.id.usernameBox);
         val userInfoBox = view.findViewById<TextView>(R.id.userInfo);
         val numItemsRecycledBox = view.findViewById<TextView>(R.id.num_items_scanned_text_box);
+        val loginOrEditButton = view.findViewById<Button>(R.id.loginOrEditButton)
 
         //Links
         val columbusRecyclingLink: Button = view.findViewById<Button>(R.id.columbus_recycling_button_link);
@@ -70,9 +72,23 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         userViewModel.selectedUser.observe(viewLifecycleOwner){ user ->
             if(user != null){
                 numItemsRecycledBox.text = user.num_items_recycled.toString();
+                loginOrEditButton.setText("Edit Account")
+            }else{
+                loginOrEditButton.setText("Log in/Create Account")
             }
         }
 
+        loginOrEditButton.setOnClickListener {
+            if(userViewModel.selectedUser.value != null){   //user logged in!
+                requireActivity().supportFragmentManager.beginTransaction().replace(
+                    R.id.fragment_container,
+                    AccountEditFragment()).addToBackStack(null).commit();
+            }else{  //send to log in screen!
+                requireActivity().supportFragmentManager.beginTransaction().replace(
+                    R.id.fragment_container,
+                    LoginFragment()).addToBackStack(null).commit();
+            }
+        }
     }
 
     override fun onDestroyView(){

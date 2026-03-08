@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,7 +13,6 @@ import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
 import com.example.recyclingapp.viewmodels.UserViewModel
 import kotlin.getValue
-import kotlin.math.log
 
 class AccountEditFragment: Fragment(R.layout.account_edit_fragment) {
 
@@ -42,7 +40,7 @@ class AccountEditFragment: Fragment(R.layout.account_edit_fragment) {
 
         val deleteAccountButton: Button = view.findViewById<Button>(R.id.delete_button)
         val logoutButton: Button = view.findViewById<Button>(R.id.logout_button)
-        val closeButton: Button = view.findViewById<Button>(R.id.closeButton)
+        val closeButton: Button = view.findViewById<Button>(R.id.close_button)
 
         deleteAccountButton.setOnClickListener {
             val user = userViewModel.selectedUser.value
