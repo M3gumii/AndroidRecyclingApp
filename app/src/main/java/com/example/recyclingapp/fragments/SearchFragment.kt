@@ -24,7 +24,7 @@ import kotlin.getValue
 class SearchFragment : Fragment(R.layout.search_fragment) {
 
 
-    private val mlogTag: String = "Login Fragment";
+    private val mlogTag: String = "Search Fragment";
 
     /**
      * View model
@@ -63,6 +63,15 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         //Set up the adapter to init to an empty list...
         adapter = SearchAdapter(emptyList()) { searchSelected -> //On the clicking of an item, send to the item screen!
             packageViewModel.getPackage(searchSelected.barcode)  //Set the package to the clicked item!
+
+            if (userViewModel.selectedUser.value != null) { //On user selection, this counts as a search by the user!
+                previousSearchesViewModel.addSearch(
+                    userViewModel.selectedUser.value!!.username,
+                    searchSelected.barcode,
+                    searchSelected.name
+                )
+            }
+
             //send to package view screen
             requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container,
@@ -84,17 +93,6 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
             if(listOfItemMatches != null) { //If we had any matches, update the list!
                 adapter.updateItems(listOfItemMatches)
-            }
-        }
-
-        //add the item selected to their searches anew to reset it's spot on the queue for deletion.
-        packageViewModel.selectedPackage.observe(viewLifecycleOwner) { pkg ->
-            if (pkg != null && userViewModel.selectedUser.value != null) {
-                previousSearchesViewModel.addSearch(
-                    userViewModel.selectedUser.value!!.username,
-                    pkg.barcode,
-                    pkg.name
-                )
             }
         }
 
