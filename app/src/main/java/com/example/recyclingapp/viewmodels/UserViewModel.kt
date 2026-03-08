@@ -84,6 +84,7 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
         }
     }
 
+
     fun addToUserRecyclingCount(username: String) {
         viewModelScope.launch {
             repo.updateUserCount(username)
