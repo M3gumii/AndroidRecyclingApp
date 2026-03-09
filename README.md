@@ -6,7 +6,7 @@ A simple recycling app used to help the Columbus, OH population with
 recycling their food packaging!
 
 Utilizes a Supabase DB as well as Camera MLKit for package barcode 
-scanning!
+scanning! Coil used for image display.
 
 ----------------------------------------------------------------------
 
