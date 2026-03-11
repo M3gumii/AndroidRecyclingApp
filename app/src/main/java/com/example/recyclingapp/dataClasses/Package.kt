@@ -5,5 +5,6 @@ class Package (
     val name: String,
     val recycling_pos: Boolean = false,
     val image_link: String? = null,
-    val description: String? = null
+    val description: String? = null,
+    val verified: Boolean = false
 )

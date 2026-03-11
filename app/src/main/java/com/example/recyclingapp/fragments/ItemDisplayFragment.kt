@@ -47,6 +47,7 @@ class ItemDisplayFragment : Fragment(R.layout.item_display_layout) {
         var name: TextView = view.findViewById<TextView>(R.id.item_name)
         var image: ImageView = view.findViewById<ImageView>(R.id.item_image)
         var isRecyclable: TextView = view.findViewById<TextView>(R.id.item_recyclable)
+        var isVerified: TextView = view.findViewById<TextView>(R.id.item_verified)
 
         /**
          * If there is some item selected, then the data should be filled in!
@@ -55,6 +56,8 @@ class ItemDisplayFragment : Fragment(R.layout.item_display_layout) {
             description.text = packageViewModel.selectedPackage.value?.description;
             name.text = packageViewModel.selectedPackage.value?.name;  //Always a name
             isRecyclable.text = "Recyclable: " + packageViewModel.selectedPackage.value?.recycling_pos.toString();
+            isVerified.text = "Recyclability Verified: " + packageViewModel.selectedPackage.value?.verified.toString();
+
             if(packageViewModel.selectedPackage.value?.image_link != null) {    //Load the image using coil if present...
                 image.load(packageViewModel.selectedPackage.value!!.image_link){
                     crossfade(true)

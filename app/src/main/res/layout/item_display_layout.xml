@@ -91,6 +91,16 @@
                     android:background="@color/shade"
                     android:gravity="center"/>
 
+                <TextView
+                    android:id="@+id/item_verified"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:text="Verified?"
+                    android:layout_margin="12dp"
+                    android:background="@color/shade"
+                    android:gravity="center"/>
+
                 <Button
                     android:id="@+id/closeButton"
                     android:layout_width="match_parent"
