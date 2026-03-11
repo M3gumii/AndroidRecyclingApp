@@ -159,7 +159,13 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                                     // TODO: Query Supabase database here
                                     packageViewModel.getPackage(upc);
                                     if (packageViewModel.selectedPackage.value == null) {
-                                        //Package match not available!
+                                        //Package match not available! -> Need to add the package to the db!
+
+                                        requireActivity().supportFragmentManager.beginTransaction()
+                                            .replace(
+                                                R.id.fragment_container,
+                                                ItemNotFoundFragment()
+                                            ).addToBackStack(null).commit();
 
 
                                     } else {  //Package match found! Send to the item info screen!

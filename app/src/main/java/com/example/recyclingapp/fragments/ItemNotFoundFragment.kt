@@ -10,8 +10,29 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
+import com.example.recyclingapp.viewmodels.PackageViewModel
+import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.UserViewModel
+import kotlin.getValue
+
 class ItemNotFoundFragment : Fragment() {
+    private val mlogTag: String = "Item Not Found Fragment";
+
+    /**
+     * View models
+     */
+    private val userViewModel: UserViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
+    private val packageViewModel: PackageViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
+    private val previousSearchesViewModel: PreviousSearchesViewModel by activityViewModels {
+        (requireActivity() as MainActivity).appViewModelFactory
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,36 +46,63 @@ class ItemNotFoundFragment : Fragment() {
             false
         )
 
-        val upc = arguments?.getString("UPC")
-
-        val upcText = view.findViewById<TextView>(R.id.upcText)
-        val submitButton = view.findViewById<Button>(R.id.submitProductButton)
-        val goBackButton = view.findViewById<Button>(R.id.goBackButton)
-
-        upcText.text = "UPC: $upc"
-
-        goBackButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-
-        submitButton.setOnClickListener {
-            navigateToSubmitNewItem(upc)
-        }
-
         return view
     }
 
-    private fun navigateToSubmitNewItem(upc: String?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(mlogTag, "OnViewCreated called!")
 
-        val fragment = SubmitNewItemFragment()
+        /**
+         *  Adds the barcode to the database!
+         *
+         */
 
-        val bundle = Bundle()
-        bundle.putString("UPC", upc)
-        fragment.arguments = bundle
+        val barcodeToAdd = packageViewModel.attemptedBarcode;
 
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
+        /**
+         * Prompt Gemini to get the item desc. and whether
+         * recyclable, etc.
+         */
+
+        /**
+         * Add in the scan to the user!
+         */
+        if(userViewModel.selectedUser.value != null && barcodeToAdd != null) {
+            userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
+//            previousSearchesViewModel.addSearch(userViewModel.selectedUser.value!!.username, barcodeToAdd, "Add this")  //TODO fin this
+        }
+
+
+    }
+
+    override fun onDestroyView(){
+        super.onDestroyView()
+        Log.d(mlogTag, "onDestroyView called!");
+    }
+
+    override fun onStart(){
+        super.onStart()
+        Log.d(mlogTag, "onStart called!");
+    }
+
+    override fun onResume(){
+        super.onResume()
+        Log.d(mlogTag, "onResume called!");
+    }
+
+    override fun onPause(){
+        super.onPause();
+        Log.d(mlogTag, "onPause called!");
+    }
+
+    override fun onStop(){
+        super.onStop();
+        Log.d(mlogTag, "onStop called!");
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(mlogTag, "onDestroy called!");
     }
 }

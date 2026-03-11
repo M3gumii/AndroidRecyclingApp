@@ -25,6 +25,8 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
     private val _selectedPackage = MutableLiveData<Package?>()
     val selectedPackage: LiveData<Package?> = _selectedPackage
 
+    var attemptedBarcode: String? = null;
+
     fun getPackages() {
         viewModelScope.launch {
             _packages.value = repo.getAllPackages()
@@ -67,7 +69,12 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
 
     fun getPackage(barcode: String){
         viewModelScope.launch {
+            attemptedBarcode = barcode;
             _selectedPackage.value = repo.getPackage(barcode);
         }
+    }
+
+    fun getAttemptedBarcode(): String?{
+        return attemptedBarcode;
     }
 }
