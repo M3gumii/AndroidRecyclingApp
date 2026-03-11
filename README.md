@@ -47,6 +47,8 @@ IMAGE SOURCES
 
 <a href="https://www.flaticon.com/free-icons/camera" title="camera icons">Camera icons created by Freepik - Flaticon</a>
 
+<a href="https://www.flaticon.com/free-icons/loading-bar" title="loading bar icons">Loading bar icons created by kerismaker - Flaticon</a>
+
 <a href="https://www.flaticon.com/free-icons/recent" title="recent icons">Recent icons created by Karacis - Flaticon</a>
 
 <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Freepik - Flaticon</a>
