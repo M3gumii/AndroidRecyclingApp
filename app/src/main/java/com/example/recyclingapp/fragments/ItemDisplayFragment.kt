@@ -10,12 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
 import coil.load
 import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
-import com.example.recyclingapp.viewmodels.PackageViewModel
-import org.w3c.dom.Text
+import com.example.recyclingapp.viewmodels.database.PackageViewModel
 
 class ItemDisplayFragment : Fragment(R.layout.item_display_layout) {
 

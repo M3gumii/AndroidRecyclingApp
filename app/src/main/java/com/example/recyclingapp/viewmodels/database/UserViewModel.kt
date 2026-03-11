@@ -1,11 +1,11 @@
-package com.example.recyclingapp.viewmodels
+package com.example.recyclingapp.viewmodels.database
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.recyclingapp.dataClasses.RecyclingDatabase
-import com.example.recyclingapp.dataClasses.User
+import com.example.recyclingapp.dataClasses.database.RecyclingDatabase
+import com.example.recyclingapp.dataClasses.database.User
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 

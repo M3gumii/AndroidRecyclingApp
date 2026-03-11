@@ -1,21 +1,24 @@
 package com.example.recyclingapp.fragments
 
-import android.content.Intent
-import android.net.Uri
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
-import com.example.recyclingapp.viewmodels.PackageViewModel
-import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
-import com.example.recyclingapp.viewmodels.UserViewModel
+import com.example.recyclingapp.dataClasses.copilot.CopilotContactor
+import com.example.recyclingapp.dataClasses.copilot.CopilotRetrofitApi
+import com.example.recyclingapp.viewmodels.copilot.CopilotAppViewModelFactory
+import com.example.recyclingapp.viewmodels.copilot.CopilotViewModel
+import com.example.recyclingapp.viewmodels.database.PackageViewModel
+import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.database.UserViewModel
 import kotlin.getValue
 
 class ItemNotFoundFragment : Fragment() {
@@ -32,6 +35,9 @@ class ItemNotFoundFragment : Fragment() {
     }
     private val previousSearchesViewModel: PreviousSearchesViewModel by activityViewModels {
         (requireActivity() as MainActivity).appViewModelFactory
+    }
+    private val copilotViewModel: CopilotViewModel by viewModels {
+        CopilotAppViewModelFactory(CopilotContactor.create("YOUR_API_KEY"))
     }
 
     override fun onCreateView(
@@ -64,15 +70,32 @@ class ItemNotFoundFragment : Fragment() {
          * Prompt Gemini to get the item desc. and whether
          * recyclable, etc.
          */
+        if(barcodeToAdd != null) {
+            copilotViewModel.scan(barcodeToAdd)
+            val pkgFound = copilotViewModel.pkg.value
 
-        /**
-         * Add in the scan to the user!
-         */
-        if(userViewModel.selectedUser.value != null && barcodeToAdd != null) {
-            userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
-//            previousSearchesViewModel.addSearch(userViewModel.selectedUser.value!!.username, barcodeToAdd, "Add this")  //TODO fin this
+            /**
+             * Add in the scan for the user!
+             */
+            if(pkgFound != null){
+                packageViewModel.addPackage(pkgFound.barcode, pkgFound.name,
+                    pkgFound.recycling_pos, pkgFound.image_link, pkgFound.description)
+                if (userViewModel.selectedUser.value != null) { //User logged in! Add to their count!
+                    userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
+                    previousSearchesViewModel.addSearch(userViewModel.selectedUser.value!!.username, barcodeToAdd, pkgFound.name)
+                }
+            }
+
+        }else{
+            Toast.makeText(requireContext(), "INVALID BARCODE ENTERED!", Toast.LENGTH_SHORT).show()
         }
 
+        packageViewModel.selectedPackage.observe(viewLifecycleOwner){
+            //On a package found, send to the package page!
+            requireActivity().supportFragmentManager.beginTransaction().replace(
+                R.id.fragment_container,
+                ItemDisplayFragment()).addToBackStack(null).commit();
+        }
 
     }
 

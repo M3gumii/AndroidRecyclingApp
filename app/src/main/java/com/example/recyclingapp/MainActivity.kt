@@ -1,5 +1,5 @@
 package com.example.recyclingapp
-import com.example.recyclingapp.viewmodels.AppViewModelFactory
+import com.example.recyclingapp.viewmodels.database.AppViewModelFactory
 import androidx.activity.viewModels
 import android.os.Bundle
 import android.util.Log
@@ -12,11 +12,11 @@ import com.example.recyclingapp.fragments.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.recyclingapp.dataClasses.RecyclingDatabase
-import com.example.recyclingapp.dataClasses.SupabaseConnection
-import com.example.recyclingapp.viewmodels.PackageViewModel
-import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
-import com.example.recyclingapp.viewmodels.UserViewModel
+import com.example.recyclingapp.dataClasses.database.RecyclingDatabase
+import com.example.recyclingapp.dataClasses.database.SupabaseConnection
+import com.example.recyclingapp.viewmodels.database.PackageViewModel
+import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.database.UserViewModel
 
 class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragments...
     //Use fragmentActivity for fragments!

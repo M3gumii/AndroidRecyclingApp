@@ -15,9 +15,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.fragment.app.activityViewModels
 import com.example.recyclingapp.MainActivity
-import com.example.recyclingapp.viewmodels.PackageViewModel
-import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
-import com.example.recyclingapp.viewmodels.UserViewModel
+import com.example.recyclingapp.viewmodels.database.PackageViewModel
+import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.database.UserViewModel
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage

@@ -1,8 +1,8 @@
-package com.example.recyclingapp.viewmodels
+package com.example.recyclingapp.viewmodels.database
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.recyclingapp.dataClasses.RecyclingDatabase
+import com.example.recyclingapp.dataClasses.database.RecyclingDatabase
 
 /**
  * A factory that knows how to create ViewModels that need a RecyclingDatabase.

@@ -1,4 +1,4 @@
-package com.example.recyclingapp.dataClasses
+package com.example.recyclingapp.dataClasses.database
 
 class PreviousSearch (
     val username: String,

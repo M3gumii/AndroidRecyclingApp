@@ -1,4 +1,4 @@
-package com.example.recyclingapp.dataClasses
+package com.example.recyclingapp.dataClasses.database
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
