@@ -11,11 +11,26 @@
         android:orientation="vertical">
 
         <!-- Green Header -->
+
         <TextView
+            android:background="@color/green"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:text="@string/home_screen_title"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@color/green"
-            android:text="Item Not Found"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:text="Item Not Found..."
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -30,20 +45,14 @@
             android:orientation="vertical"
             android:background="@color/shade">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="We couldn't find this item in our database."
-                android:textSize="16sp"
-                android:layout_marginBottom="8dp"/>
-
-            <TextView
-                android:id="@+id/upcText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/loading"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"/>
 
             <View
                 android:layout_width="match_parent"
@@ -51,22 +60,16 @@
                 android:background="@color/light_grey"
                 android:layout_marginBottom="16dp"/>
 
-            <Button
-                android:id="@+id/submitProductButton"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Submit New Product"
-                android:background="@color/green"
-                app:backgroundTint="@color/green"/>
-
-            <Button
-                android:id="@+id/goBackButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Go Back to Scanner"
-                android:layout_marginTop="12dp"
-                android:background="@color/green"
-                app:backgroundTint="@color/green"/>
+                android:text="Please wait.\nThe item is being added to the app now!"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:paddingBottom="20dp"
+                android:lineSpacingExtra="6sp"
+                android:layout_marginBottom="8dp"/>
 
         </LinearLayout>
 
