@@ -8,6 +8,19 @@ recycling their food packaging!
 Utilizes a Supabase DB as well as Camera MLKit for package barcode 
 scanning! Coil used for image display.
 
+## 🔑 API Key Setup
+
+This project requires an OpenAI API key.
+
+1. Create a file named `local.properties` in the project root.
+2. Add the following line:
+
+   OPENAI_API_KEY=your_key_here
+
+3. Build and run the project.
+
+Note: `local.properties` is intentionally excluded from version control.
+
 ----------------------------------------------------------------------
 
 
