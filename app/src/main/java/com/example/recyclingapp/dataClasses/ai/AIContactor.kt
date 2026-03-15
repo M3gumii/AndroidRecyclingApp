@@ -1,13 +1,13 @@
-package com.example.recyclingapp.dataClasses.copilot
+package com.example.recyclingapp.dataClasses.ai
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object CopilotContactor {
-    private const val BASE_URL = "https://api.githubcopilot.com/"
+object AIContactor {
+    private const val BASE_URL = "https://api.openai.com/"
 
-    fun create(apiKey: String): CopilotRetrofitApi {
+    fun create(apiKey: String): AIRetrofitApi {
         val client = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
@@ -23,7 +23,7 @@ object CopilotContactor {
             .addConverterFactory(MoshiConverterFactory.create())
             .client(client)
             .build()
-            .create(CopilotRetrofitApi::class.java)
+            .create(AIRetrofitApi::class.java)
     }
 
 }

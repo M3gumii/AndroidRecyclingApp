@@ -4,15 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recyclingapp.dataClasses.copilot.CopilotPrompter
-import com.example.recyclingapp.dataClasses.copilot.CopilotRetrofitApi
+import com.example.recyclingapp.dataClasses.ai.AIPrompter
+import com.example.recyclingapp.dataClasses.ai.AIRetrofitApi
 import com.example.recyclingapp.dataClasses.database.Package
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
-class CopilotViewModel(private val api: CopilotRetrofitApi): ViewModel() {
+/**
+ * Used to prompt AI to find food package descriptions, etc. based on the barcode
+ * entered.
+ *
+ * Follows the AIRetrofitApi
+ */
+class CopilotViewModel(private val api: AIRetrofitApi): ViewModel() {
 
-    private val copilot = CopilotPrompter()
+    private val copilot = AIPrompter()
     private val _pkg = MutableLiveData<Package>()
     val pkg: LiveData<Package> = _pkg
 

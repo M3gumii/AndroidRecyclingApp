@@ -2,7 +2,7 @@ package com.example.recyclingapp.viewmodels.copilot
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.recyclingapp.dataClasses.copilot.CopilotRetrofitApi
+import com.example.recyclingapp.dataClasses.ai.AIRetrofitApi
 
 /**
  * A factory that knows how to create ViewModels that need a CopilotRetrofitApi.
@@ -13,7 +13,7 @@ import com.example.recyclingapp.dataClasses.copilot.CopilotRetrofitApi
  * If the ViewModel type is unknown, it throws an error.
  */
 class CopilotAppViewModelFactory(
-    private val api: CopilotRetrofitApi
+    private val api: AIRetrofitApi
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

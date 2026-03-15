@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.recyclingapp.dataClasses.database.RecyclingDatabase
 import com.example.recyclingapp.dataClasses.database.SupabaseConnection
+import com.example.recyclingapp.fragments.ItemNotFoundFragment
 import com.example.recyclingapp.viewmodels.database.PackageViewModel
 import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
 import com.example.recyclingapp.viewmodels.database.UserViewModel
@@ -61,7 +62,8 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
         var currentFragment = fm.findFragmentById(R.id.fragment_container);
         //Start with login screen... Check if there's a fragment IN the container.
         if(currentFragment == null){
-            fm.beginTransaction().add(R.id.fragment_container, LoginFragment()).commit();
+//            packageViewModel.getPackage("100")
+            fm.beginTransaction().add(R.id.fragment_container, HomeFragment()).commit();
         }
 
         /**

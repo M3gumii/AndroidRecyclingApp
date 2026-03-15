@@ -1,6 +1,5 @@
 package com.example.recyclingapp.fragments
 
-import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,14 +11,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
-import com.example.recyclingapp.dataClasses.copilot.CopilotContactor
-import com.example.recyclingapp.dataClasses.copilot.CopilotRetrofitApi
+import com.example.recyclingapp.dataClasses.ai.AIContactor
 import com.example.recyclingapp.viewmodels.copilot.CopilotAppViewModelFactory
 import com.example.recyclingapp.viewmodels.copilot.CopilotViewModel
 import com.example.recyclingapp.viewmodels.database.PackageViewModel
 import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
 import com.example.recyclingapp.viewmodels.database.UserViewModel
-import kotlin.getValue
+import com.example.recyclingapp.BuildConfig
 
 class ItemNotFoundFragment : Fragment() {
     private val mlogTag: String = "Item Not Found Fragment";
@@ -37,7 +35,7 @@ class ItemNotFoundFragment : Fragment() {
         (requireActivity() as MainActivity).appViewModelFactory
     }
     private val copilotViewModel: CopilotViewModel by viewModels {
-        CopilotAppViewModelFactory(CopilotContactor.create("YOUR_API_KEY"))
+        CopilotAppViewModelFactory(AIContactor.create(BuildConfig.OPENAI_API_KEY))
     }
 
     override fun onCreateView(
@@ -64,14 +62,15 @@ class ItemNotFoundFragment : Fragment() {
          *
          */
 
-        val barcodeToAdd = packageViewModel.attemptedBarcode;
+        val barcodeToAdd = packageViewModel.getAttemptedBarcode();
+        //Attempted barcode should be present in the case of an item not being found.
 
         /**
          * Prompt Gemini to get the item desc. and whether
          * recyclable, etc.
          */
         if(barcodeToAdd != null) {
-            copilotViewModel.scan(barcodeToAdd)
+            copilotViewModel.scan(barcodeToAdd) //Find the barcode via copilot...
             val pkgFound = copilotViewModel.pkg.value
 
             /**
@@ -84,6 +83,8 @@ class ItemNotFoundFragment : Fragment() {
                     userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
                     previousSearchesViewModel.addSearch(userViewModel.selectedUser.value!!.username, barcodeToAdd, pkgFound.name)
                 }
+            }else{
+                Toast.makeText(requireContext(), "BARCODE NOT FOUND!", Toast.LENGTH_SHORT).show()
             }
 
         }else{

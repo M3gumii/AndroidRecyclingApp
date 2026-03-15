@@ -1,13 +1,15 @@
-package com.example.recyclingapp.dataClasses.copilot
+package com.example.recyclingapp.dataClasses.ai
 
+import com.example.recyclingapp.dataClasses.ai.dataClasses.AIMessage
+import com.example.recyclingapp.dataClasses.ai.dataClasses.AIRequest
 import org.json.JSONObject
 
-class CopilotPrompter {
+class AIPrompter {
 
     /**
      * Prompts Gemini to get data based on the barcode sent.
      */
-    suspend fun lookupBarcode(barcode: String, api: CopilotRetrofitApi): JSONObject {
+    suspend fun lookupBarcode(barcode: String, api: AIRetrofitApi): JSONObject {
         val prompt = """
                 You are a barcode lookup engine.
                 You will be given a barcode, via the barcode, find the 
@@ -33,13 +35,12 @@ class CopilotPrompter {
                 """.trimIndent()
 
 
-        val request = CopilotRequest(
-            messages = listOf(CopilotMessage("user", prompt))
+        val request = AIRequest(
+            messages = listOf(AIMessage("user", prompt))
         )
 
-        val response = api.askCopilot(request)
+        val response = api.askAI(request)
         val json = response.choices.first().message.content
-
         return JSONObject(json)
     }
 }
