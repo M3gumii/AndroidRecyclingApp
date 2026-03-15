@@ -4,6 +4,12 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+/**
+ * Creates the Retrofit client used to talk to the AI API.
+ *
+ * Adds the API key to every request and returns an AIRetrofitApi
+ * that can send messages to the AI.
+ */
 object AIContactor {
     private const val BASE_URL = "https://api.openai.com/"
 

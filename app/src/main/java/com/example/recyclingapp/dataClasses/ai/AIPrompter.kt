@@ -4,10 +4,18 @@ import com.example.recyclingapp.dataClasses.ai.dataClasses.AIMessage
 import com.example.recyclingapp.dataClasses.ai.dataClasses.AIRequest
 import org.json.JSONObject
 
+/**
+ * Sends a barcode prompt to the AI and returns the JSON result.
+ *
+ * Builds a request using the barcode, sends it through the AI API,
+ * and converts the AI's response into a JSONObject.
+ */
 class AIPrompter {
 
     /**
      * Prompts Gemini to get data based on the barcode sent.
+     *
+     * AIRetrofitApi created from AIContactor!
      */
     suspend fun lookupBarcode(barcode: String, api: AIRetrofitApi): JSONObject {
         val prompt = """
