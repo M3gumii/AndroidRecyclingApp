@@ -1,4 +1,4 @@
-package com.example.recyclingapp.viewmodels.copilot
+package com.example.recyclingapp.viewmodels.ai
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  *
  * Follows the AIRetrofitApi
  */
-class CopilotViewModel(private val api: AIRetrofitApi): ViewModel() {
+class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
 
     private val copilot = AIPrompter()
     private val _pkg = MutableLiveData<Package>()

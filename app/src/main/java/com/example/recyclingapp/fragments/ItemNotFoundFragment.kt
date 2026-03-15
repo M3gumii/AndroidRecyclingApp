@@ -12,8 +12,8 @@ import androidx.fragment.app.viewModels
 import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
 import com.example.recyclingapp.dataClasses.ai.AIContactor
-import com.example.recyclingapp.viewmodels.copilot.CopilotAppViewModelFactory
-import com.example.recyclingapp.viewmodels.copilot.CopilotViewModel
+import com.example.recyclingapp.viewmodels.ai.AIAppViewModelFactory
+import com.example.recyclingapp.viewmodels.ai.AIViewModel
 import com.example.recyclingapp.viewmodels.database.PackageViewModel
 import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
 import com.example.recyclingapp.viewmodels.database.UserViewModel
@@ -34,8 +34,8 @@ class ItemNotFoundFragment : Fragment() {
     private val previousSearchesViewModel: PreviousSearchesViewModel by activityViewModels {
         (requireActivity() as MainActivity).appViewModelFactory
     }
-    private val copilotViewModel: CopilotViewModel by viewModels {
-        CopilotAppViewModelFactory(AIContactor.create(BuildConfig.OPENAI_API_KEY))
+    private val AIViewModel: AIViewModel by viewModels {
+        AIAppViewModelFactory(AIContactor.create(BuildConfig.OPENAI_API_KEY))
     }
 
     override fun onCreateView(
@@ -70,8 +70,8 @@ class ItemNotFoundFragment : Fragment() {
          * recyclable, etc.
          */
         if(barcodeToAdd != null) {
-            copilotViewModel.scan(barcodeToAdd) //Find the barcode via copilot...
-            val pkgFound = copilotViewModel.pkg.value
+            AIViewModel.scan(barcodeToAdd) //Find the barcode via copilot...
+            val pkgFound = AIViewModel.pkg.value
 
             /**
              * Add in the scan for the user!

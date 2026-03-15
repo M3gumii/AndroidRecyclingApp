@@ -1,4 +1,4 @@
-package com.example.recyclingapp.viewmodels.copilot
+package com.example.recyclingapp.viewmodels.ai
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,13 +12,13 @@ import com.example.recyclingapp.dataClasses.ai.AIRetrofitApi
  *
  * If the ViewModel type is unknown, it throws an error.
  */
-class CopilotAppViewModelFactory(
+class AIAppViewModelFactory(
     private val api: AIRetrofitApi
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CopilotViewModel::class.java)) {
-            return CopilotViewModel(api) as T
+        if (modelClass.isAssignableFrom(AIViewModel::class.java)) {
+            return AIViewModel(api) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
