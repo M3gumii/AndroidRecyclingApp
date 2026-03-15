@@ -1,7 +1,7 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 // Read the AI key property from local.properties
-val openAiKey: String = gradleLocalProperties(rootDir, providers).getProperty("OPENAI_API_KEY") ?: ""
+val openAiKey: String = gradleLocalProperties(rootDir, providers).getProperty("AI_API_KEY") ?: ""
 
 plugins {
     alias(libs.plugins.android.application)
@@ -27,7 +27,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "OPENAI_API_KEY", openAiKey)
+        buildConfigField("String", "AI_API_KEY", openAiKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

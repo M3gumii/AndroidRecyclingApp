@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -35,7 +36,7 @@ class ItemNotFoundFragment : Fragment() {
         (requireActivity() as MainActivity).appViewModelFactory
     }
     private val AIViewModel: AIViewModel by viewModels {
-        AIAppViewModelFactory(AIContactor.create(BuildConfig.OPENAI_API_KEY))
+        AIAppViewModelFactory(AIContactor.create(BuildConfig.AI_API_KEY))
     }
 
     override fun onCreateView(
@@ -57,47 +58,55 @@ class ItemNotFoundFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(mlogTag, "OnViewCreated called!")
 
-        /**
-         *  Adds the barcode to the database!
-         *
-         */
+        val loadingText: TextView = view.findViewById(R.id.loading_text)
 
-        val barcodeToAdd = packageViewModel.getAttemptedBarcode();
-        //Attempted barcode should be present in the case of an item not being found.
+        val barcodeToAdd = packageViewModel.getAttemptedBarcode()
 
-        /**
-         * Prompt Gemini to get the item desc. and whether
-         * recyclable, etc.
-         */
-        if(barcodeToAdd != null) {
-            AIViewModel.scan(barcodeToAdd) //Find the barcode via copilot...
-            val pkgFound = AIViewModel.pkg.value
-
-            /**
-             * Add in the scan for the user!
-             */
-            if(pkgFound != null){
-                packageViewModel.addPackage(pkgFound.barcode, pkgFound.name,
-                    pkgFound.recycling_pos, pkgFound.image_link, pkgFound.description)
-                if (userViewModel.selectedUser.value != null) { //User logged in! Add to their count!
-                    userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
-                    previousSearchesViewModel.addSearch(userViewModel.selectedUser.value!!.username, barcodeToAdd, pkgFound.name)
-                }
-            }else{
-                Toast.makeText(requireContext(), "BARCODE NOT FOUND!", Toast.LENGTH_SHORT).show()
-            }
-
-        }else{
+        if (barcodeToAdd == null) {
             Toast.makeText(requireContext(), "INVALID BARCODE ENTERED!", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        packageViewModel.selectedPackage.observe(viewLifecycleOwner){
-            //On a package found, send to the package page!
-            requireActivity().supportFragmentManager.beginTransaction().replace(
-                R.id.fragment_container,
-                ItemDisplayFragment()).addToBackStack(null).commit();
+        // Only scan ONCE
+        if (AIViewModel.pkg.value == null) {
+            Log.d(mlogTag, "Scanning barcode!")
+            AIViewModel.scan(barcodeToAdd)
         }
 
+        // Observe results
+        AIViewModel.pkg.observe(viewLifecycleOwner) { pkgFound ->
+
+            Log.d(mlogTag, "PACKAGE FOUND RESP $pkgFound")
+
+            if (pkgFound != null) {
+                packageViewModel.addPackage(
+                    pkgFound.barcode,
+                    pkgFound.name,
+                    pkgFound.recycling_pos,
+                    pkgFound.image_link,
+                    pkgFound.description
+                )
+
+                userViewModel.selectedUser.value?.let { user ->
+                    userViewModel.addToUserRecyclingCount(user.username)
+                    previousSearchesViewModel.addSearch(user.username, barcodeToAdd, pkgFound.name)
+                }
+            } else {
+                Toast.makeText(requireContext(), "BARCODE NOT FOUND!", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        // Navigation observer
+        packageViewModel.selectedPackage.observe(viewLifecycleOwner) { pkg ->
+            if (pkg != null) {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, ItemDisplayFragment())
+                    .addToBackStack(null)
+                    .commit()
+            } else {
+                loadingText.text = "UNABLE TO ADD THE ITEM!\nPLEASE NAVIGATE TO HOME AND TRY AGAIN LATER"
+            }
+        }
     }
 
     override fun onDestroyView(){

@@ -1,5 +1,6 @@
 package com.example.recyclingapp.viewmodels.ai
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
  */
 class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
 
-    private val copilot = AIPrompter()
+    private val mLogTag: String = "AIViewModel"
+    private val ai = AIPrompter()
     private val _pkg = MutableLiveData<Package>()
     val pkg: LiveData<Package> = _pkg
 
@@ -26,17 +28,22 @@ class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
      */
     fun scan(barcode: String) {
         viewModelScope.launch {
-            val data = copilot.lookupBarcode(barcode, api)
-            val pkgFound = Package(
-                barcode = barcode,
-                name = data.getString("name"),
-                recycling_pos = data.getBoolean("recycling_pos"),
-                image_link = null,
-                description = data.getString("description"),
-                verified = false
-            )
+            try {
+                val data = ai.lookupBarcode(barcode, api)
+                val pkgFound = Package(
+                    barcode = barcode,
+                    name = data.getString("name"),
+                    recycling_pos = data.getBoolean("recycling_pos"),
+                    image_link = null,
+                    description = data.getString("description"),
+                    verified = false
+                )
 
-            _pkg.value = pkgFound
+                _pkg.value = pkgFound
+            } catch (e: Exception) {
+                Log.e(mLogTag, "AI lookup failed", e)
+                _pkg.value = null;  //On package lookup fail, set the val to null!
+            }
         }
     }
 }

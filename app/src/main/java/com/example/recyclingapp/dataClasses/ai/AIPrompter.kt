@@ -1,6 +1,8 @@
 package com.example.recyclingapp.dataClasses.ai
 
-import com.example.recyclingapp.dataClasses.ai.dataClasses.AIMessage
+import android.util.Log
+import com.example.recyclingapp.dataClasses.ai.dataClasses.AIContent
+import com.example.recyclingapp.dataClasses.ai.dataClasses.AIPart
 import com.example.recyclingapp.dataClasses.ai.dataClasses.AIRequest
 import org.json.JSONObject
 
@@ -19,36 +21,55 @@ class AIPrompter {
      */
     suspend fun lookupBarcode(barcode: String, api: AIRetrofitApi): JSONObject {
         val prompt = """
-                You are a barcode lookup engine.
-                You will be given a barcode, via the barcode, find the 
-                food packaging's name, and what the packaging is made of.
-                Based on what the packaging is mostly made of (like a cardboard box) 
-                set recycling_pos to true or false based on Columbus, Ohio's recycling
-                rules.
-                Then fill in the description field with simple details on how to recycle the item.
-                Input: $barcode
-                Output: JSON with fields:
-                {
-                  "barcode": "...",
-                  "name": "...",
-                  "recycling_pos": true/false,
-                  "description": "..."
-                }
-                Respond ONLY with valid JSON.
-                An example output would be:
-                [{"barcode":"00011110080005",
-                "name":"Kroger Purified Water 16.9 oz Bottle",
-                "recycling_pos":true,
-                "description":"Clear PET water bottle recyclable in Columbus; cap recyclable."}]
-                """.trimIndent()
+        You are a barcode lookup engine.
 
+        You will be given a barcode. If you recognize the barcode and can reliably
+        identify a real product, return its data.
+
+        When you DO know the product, respond with a single JSON object:
+
+        {
+          "barcode": "...",
+          "name": "...",
+          "recycling_pos": true/false,
+          "description": "..."
+        }
+
+        Rules:
+        - Respond ONLY with valid JSON.
+        - Never include explanations or text outside the JSON.
+        - Never return an array, only a single JSON object.
+
+        Input barcode: $barcode
+    """.trimIndent()
 
         val request = AIRequest(
-            messages = listOf(AIMessage("user", prompt))
+            contents = listOf(
+                AIContent(
+                    parts = listOf(
+                        AIPart(prompt)
+                    )
+                )
+            )
         )
 
+        Log.d("AI PROMPTER", "PROMPT:\n$prompt")
+
         val response = api.askAI(request)
-        val json = response.choices.first().message.content
-        return JSONObject(json)
+
+        // ⭐ FIXED: Gemini response extraction
+        val text = response
+            .candidates.first()
+            .content.parts.first()
+            .text
+
+        Log.d("AI PROMPTER", "RAW TEXT FROM GEMINI: $text")
+
+        return try {
+            JSONObject(text)
+        } catch (e: Exception) {
+            Log.e("AIPrompter", "Invalid JSON from AI: $text")
+            JSONObject()
+        }
     }
 }
