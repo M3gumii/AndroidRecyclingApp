@@ -19,28 +19,35 @@ class AIPrompter {
      *
      * AIRetrofitApi created from AIContactor!
      */
-    suspend fun lookupBarcode(barcode: String, api: AIRetrofitApi): JSONObject {
+    suspend fun lookupItem(name: String?, barcode: String, api: AIRetrofitApi): JSONObject {
         val prompt = """
-        You are a barcode lookup engine.
-
-        You will be given a barcode. If you recognize the barcode and can reliably
-        identify a real product, return its data.
-
-        When you DO know the product, respond with a single JSON object:
-
+        You are a packaging inference engine.
+        
+        You will be given:
+        - A product name
+        
+        Your job is to infer the packaging material and recyclability based ONLY on the 
+        product name and Columbus, OH recycling rules.
+        
+        Return ONLY a single JSON object in this exact structure:
+        
         {
-          "barcode": "...",
-          "name": "...",
-          "recycling_pos": true/false,
-          "description": "..."
+          "barcode": $barcode,
+          "name": $name,
+          "recycling_pos": true/false, <- decide based upon Columbus, OH recycling rules.
+          "image_link": null,
+          "description": "A simple explanation of the packaging and how to recycle it.",
+          "verified": false
         }
-
-        Rules:
-        - Respond ONLY with valid JSON.
-        - Never include explanations or text outside the JSON.
-        - Never return an array, only a single JSON object.
-
-        Input barcode: $barcode
+        
+        RULES:
+        - Respond ONLY with raw JSON.
+        - Do NOT wrap the JSON in code fences or markdown.
+        - Do NOT include explanations or reasoning.
+        - Do NOT return an array.
+        - Do NOT change or guess the product name.
+        - If packaging information is missing/you cannot tell how to recycle the item, 
+            set the barcode field to NULL!
     """.trimIndent()
 
         val request = AIRequest(
@@ -58,10 +65,14 @@ class AIPrompter {
         val response = api.askAI(request)
 
         // ⭐ FIXED: Gemini response extraction
-        val text = response
+        var text = response
             .candidates.first()
             .content.parts.first()
             .text
+
+        text = text.removePrefix("```json").removePrefix("```")
+            .removeSuffix("```").trim() //Get the final valid obj!
+
 
         Log.d("AI PROMPTER", "RAW TEXT FROM GEMINI: $text")
 
