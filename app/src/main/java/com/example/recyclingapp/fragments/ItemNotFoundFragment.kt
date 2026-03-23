@@ -19,9 +19,6 @@ import com.example.recyclingapp.viewmodels.database.PackageViewModel
 import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
 import com.example.recyclingapp.viewmodels.database.UserViewModel
 import com.example.recyclingapp.BuildConfig
-import com.example.recyclingapp.dataClasses.ai.OpenFoodFactsApi
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 class ItemNotFoundFragment : Fragment() {
     private val mlogTag: String = "Item Not Found Fragment";
