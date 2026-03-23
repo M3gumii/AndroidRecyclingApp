@@ -1,4 +1,4 @@
-package com.example.recyclingapp.dataClasses
+package com.example.recyclingapp.dataClasses.database
 
 /**
  * Holds Supabase specific url, API keys, etc!

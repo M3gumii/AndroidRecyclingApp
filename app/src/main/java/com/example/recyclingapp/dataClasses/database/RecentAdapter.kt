@@ -1,15 +1,10 @@
-package com.example.recyclingapp.dataClasses
+package com.example.recyclingapp.dataClasses.database
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
-import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
-import com.example.recyclingapp.viewmodels.PackageViewModel
-import com.example.recyclingapp.viewmodels.UserViewModel
-import kotlin.getValue
 
 class RecentItemAdapter(
     private var items: List<PreviousSearch>,    //List of names for the button!

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
-import com.example.recyclingapp.viewmodels.UserViewModel
+import com.example.recyclingapp.viewmodels.database.UserViewModel
 import kotlin.getValue
 
 class AccountCreationFragment : Fragment(R.layout.account_creation_fragment) {

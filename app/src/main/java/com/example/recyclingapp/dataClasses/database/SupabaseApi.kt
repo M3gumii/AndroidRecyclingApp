@@ -1,4 +1,4 @@
-package com.example.recyclingapp.dataClasses
+package com.example.recyclingapp.dataClasses.database
 
 import retrofit2.http.Body
 import retrofit2.http.DELETE

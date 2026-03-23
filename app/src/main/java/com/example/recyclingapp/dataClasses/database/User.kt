@@ -1,4 +1,4 @@
-package com.example.recyclingapp.dataClasses
+package com.example.recyclingapp.dataClasses.database
 
 data class User(
     val username: String,

@@ -15,9 +15,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.fragment.app.activityViewModels
 import com.example.recyclingapp.MainActivity
-import com.example.recyclingapp.viewmodels.PackageViewModel
-import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
-import com.example.recyclingapp.viewmodels.UserViewModel
+import com.example.recyclingapp.viewmodels.database.PackageViewModel
+import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.database.UserViewModel
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -159,7 +159,13 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                                     // TODO: Query Supabase database here
                                     packageViewModel.getPackage(upc);
                                     if (packageViewModel.selectedPackage.value == null) {
-                                        //Package match not available!
+                                        //Package match not available! -> Need to add the package to the db!
+
+                                        requireActivity().supportFragmentManager.beginTransaction()
+                                            .replace(
+                                                R.id.fragment_container,
+                                                ItemNotFoundFragment()
+                                            ).addToBackStack(null).commit();
 
 
                                     } else {  //Package match found! Send to the item info screen!

@@ -1,10 +1,10 @@
-package com.example.recyclingapp.viewmodels
+package com.example.recyclingapp.viewmodels.database
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.recyclingapp.dataClasses.RecyclingDatabase
-import com.example.recyclingapp.dataClasses.Package
+import com.example.recyclingapp.dataClasses.database.RecyclingDatabase
+import com.example.recyclingapp.dataClasses.database.Package
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
@@ -24,6 +24,8 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
      */
     private val _selectedPackage = MutableLiveData<Package?>()
     val selectedPackage: LiveData<Package?> = _selectedPackage
+
+    private var attemptedBarcode: String? = null;
 
     fun getPackages() {
         viewModelScope.launch {
@@ -48,6 +50,7 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
             )
 
             repo.addPackage(newPackage)
+            _selectedPackage.value = newPackage
             _packages.value = repo.getAllPackages()
         }
     }
@@ -67,7 +70,12 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
 
     fun getPackage(barcode: String){
         viewModelScope.launch {
+            attemptedBarcode = barcode;
             _selectedPackage.value = repo.getPackage(barcode);
         }
+    }
+
+    fun getAttemptedBarcode(): String?{
+        return attemptedBarcode;
     }
 }

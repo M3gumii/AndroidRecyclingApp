@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclingapp.MainActivity
 import com.example.recyclingapp.R
-import com.example.recyclingapp.dataClasses.RecentItemAdapter
-import com.example.recyclingapp.viewmodels.PackageViewModel
-import com.example.recyclingapp.viewmodels.PreviousSearchesViewModel
-import com.example.recyclingapp.viewmodels.UserViewModel
-import java.util.Collections.list
-import java.util.concurrent.locks.ReentrantLock
+import com.example.recyclingapp.dataClasses.database.RecentItemAdapter
+import com.example.recyclingapp.viewmodels.database.PackageViewModel
+import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
+import com.example.recyclingapp.viewmodels.database.UserViewModel
 import kotlin.getValue
 
 class RecentFragment : Fragment(R.layout.recent_fragment) {

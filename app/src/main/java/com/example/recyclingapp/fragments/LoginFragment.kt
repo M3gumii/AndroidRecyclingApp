@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.recyclingapp.R
-import com.example.recyclingapp.viewmodels.UserViewModel
+import com.example.recyclingapp.viewmodels.database.UserViewModel
 import androidx.fragment.app.activityViewModels
 import com.example.recyclingapp.MainActivity
 
