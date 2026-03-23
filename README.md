@@ -8,14 +8,17 @@ recycling their food packaging!
 Utilizes a Supabase DB as well as Camera MLKit for package barcode 
 scanning! Coil used for image display.
 
+Copilot and the Open Food Facts website used for new item data 
+fetching via barcodes!
+
 ## 🔑 API Key Setup
 
-This project requires an OpenAI API key.
+This project requires a Google AI Studio API key.
 
 1. Create a file named `local.properties` in the project root.
 2. Add the following line:
 
-   OPENAI_API_KEY=your_key_here
+   AI_API_KEY=your_key_here
 
 3. Build and run the project.
 
