@@ -62,8 +62,7 @@ class MainActivity : AppCompatActivity() {  //AppCompatActivity to hold fragment
         var currentFragment = fm.findFragmentById(R.id.fragment_container);
         //Start with login screen... Check if there's a fragment IN the container.
         if(currentFragment == null){
-            packageViewModel.getPackage("013562472925")
-            fm.beginTransaction().add(R.id.fragment_container, ItemNotFoundFragment()).commit();
+            fm.beginTransaction().add(R.id.fragment_container, LoginFragment()).commit();
         }
 
         /**
