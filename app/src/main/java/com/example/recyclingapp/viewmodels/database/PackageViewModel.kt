@@ -50,6 +50,7 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
             )
 
             repo.addPackage(newPackage)
+            _selectedPackage.value = newPackage
             _packages.value = repo.getAllPackages()
         }
     }

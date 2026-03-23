@@ -54,6 +54,9 @@ class ItemNotFoundFragment : Fragment() {
         return view
     }
 
+    /**
+     * @requires - the barcode to add is NOT already in the db!
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(mlogTag, "OnViewCreated called!")
@@ -61,24 +64,23 @@ class ItemNotFoundFragment : Fragment() {
         val loadingText: TextView = view.findViewById(R.id.loading_text)
 
         val barcodeToAdd = packageViewModel.getAttemptedBarcode()
+        Log.d(mlogTag, "ATTEMPTED BARCODE: $barcodeToAdd");
 
         if (barcodeToAdd == null) {
             Toast.makeText(requireContext(), "INVALID BARCODE ENTERED!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Only scan ONCE
-        if (AIViewModel.pkg.value == null) {
-            Log.d(mlogTag, "Scanning barcode!")
-            AIViewModel.scan(barcodeToAdd)
-        }
+        Log.d(mlogTag, "Scanning barcode!")
+        AIViewModel.scan(barcodeToAdd)
 
         // Observe results
         AIViewModel.pkg.observe(viewLifecycleOwner) { pkgFound ->
+            //If a package is found, then it should change this!
 
             Log.d(mlogTag, "PACKAGE FOUND RESP $pkgFound")
 
-            if (pkgFound != null) {
+            if (pkgFound != null) { //Add the new package to the db!
                 packageViewModel.addPackage(
                     pkgFound.barcode,
                     pkgFound.name,
@@ -87,18 +89,20 @@ class ItemNotFoundFragment : Fragment() {
                     pkgFound.description
                 )
 
-                userViewModel.selectedUser.value?.let { user ->
+                userViewModel.selectedUser.value?.let { user -> //If the user is logged in, add it to their searches!
                     userViewModel.addToUserRecyclingCount(user.username)
                     previousSearchesViewModel.addSearch(user.username, barcodeToAdd, pkgFound.name)
                 }
-            } else {
+            } else {    //AI Can't find the barcode!
                 Toast.makeText(requireContext(), "BARCODE NOT FOUND!", Toast.LENGTH_LONG).show()
             }
         }
 
         // Navigation observer
         packageViewModel.selectedPackage.observe(viewLifecycleOwner) { pkg ->
-            if (pkg != null) {
+            //If the package changed to the new item found...
+
+            if (pkg != null) {  //Go to the display page!
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, ItemDisplayFragment())
                     .addToBackStack(null)
