@@ -147,6 +147,10 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                         imageProxy.imageInfo.rotationDegrees
                     )
 
+                    /**
+                     * NOW GET THE BARCODE!
+                     */
+
                     scanner.process(image)
                         .addOnSuccessListener { barcodes ->
 
@@ -156,8 +160,7 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                                 if (upc != null) {
                                     Log.d(mlogTag, "UPC Found: $upc")
 
-                                    // TODO: Query Supabase database here
-                                    packageViewModel.getPackage(upc);
+                                    packageViewModel.getPackage(upc);   //Check for the package already in the db.
                                     if (packageViewModel.selectedPackage.value == null) {
                                         //Package match not available! -> Need to add the package to the db!
 
@@ -171,8 +174,6 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                                     } else {  //Package match found! Send to the item info screen!
 
                                         if (userViewModel.selectedUser.value != null) {   //add to user searches if logged in
-                                            packageViewModel.getPackage(upc)    //Get from the db!
-
                                             previousSearchesViewModel.addSearch(
                                                 userViewModel.selectedUser.value!!.username,
                                                 upc,
@@ -186,7 +187,6 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                                                 R.id.fragment_container,
                                                 ItemDisplayFragment()
                                             ).addToBackStack(null).commit();
-
                                     }
 
                                     imageAnalyzer.clearAnalyzer() // Stop scanning after first match
