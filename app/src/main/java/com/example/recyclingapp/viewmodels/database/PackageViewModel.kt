@@ -7,7 +7,7 @@ import com.example.recyclingapp.dataClasses.database.RecyclingDatabase
 import com.example.recyclingapp.dataClasses.database.Package
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-
+import com.example.recyclingapp.viewmodels.ai.AIViewModel
 /**
  * Allows for the fragment to update the repo through this!
  */
@@ -24,6 +24,9 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
      */
     private val _selectedPackage = MutableLiveData<Package?>()
     val selectedPackage: LiveData<Package?> = _selectedPackage
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private var attemptedBarcode: String? = null;
 
@@ -63,15 +66,25 @@ class PackageViewModel(private val repo: RecyclingDatabase) : ViewModel() {
     }
 
     fun clearSelectedPackage(){
-        viewModelScope.launch {
+       // viewModelScope.launch {
             _selectedPackage.value = null;
-        }
+       // }
     }
 
-    fun getPackage(barcode: String){
+    fun getPackage(barcode: String, aiViewModel: AIViewModel? = null){
         viewModelScope.launch {
-            attemptedBarcode = barcode;
-            _selectedPackage.value = repo.getPackage(barcode);
+            attemptedBarcode = barcode
+            _isLoading.value = true
+
+            val result = repo.getPackage(barcode)
+            _selectedPackage.value = result
+
+            if(result == null && aiViewModel != null){
+                // Call AI lookup safely
+                aiViewModel.scan(barcode)
+            }
+
+            _isLoading.value = false
         }
     }
 

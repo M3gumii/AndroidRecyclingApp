@@ -22,18 +22,10 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import android.app.AlertDialog
-import com.bumptech.glide.Glide
-import android.widget.ImageView
-import android.widget.TextView
 
 class CameraFragment : Fragment(R.layout.camera_fragment) {
     private val mlogTag: String = "Camera Fragment";
+    private var hasScanned = false
 
     /**
      * View models
@@ -82,6 +74,7 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
     override fun onResume() {
         super.onResume()
         Log.d(mlogTag, "onResume called!")
+        hasScanned = false
     }
 
     override fun onPause() {
@@ -157,47 +150,46 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                             for (barcode in barcodes) {
 
                                 val upc = barcode.rawValue  //Get the 12 dig num for the barcode!
-                                if (upc != null) {
+                                if (upc != null && !hasScanned) {
+                                    hasScanned = true
                                     Log.d(mlogTag, "UPC Found: $upc")
 
-                                    packageViewModel.getPackage(upc);   //Check for the package already in the db.
-                                    if (packageViewModel.selectedPackage.value == null) {
-                                        //Package match not available! -> Need to add the package to the db!
+                                    packageViewModel.getPackage(upc)
 
-                                        requireActivity().supportFragmentManager.beginTransaction()
-                                            .replace(
-                                                R.id.fragment_container,
-                                                ItemNotFoundFragment()
-                                            ).addToBackStack(null).commit();
+                                    packageViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
 
+                                        if (loading == false) {  // ONLY act AFTER DB finishes
 
-                                    } else {  //Package match found! Send to the item info screen!
+                                            val pkg = packageViewModel.selectedPackage.value
 
-                                        if (userViewModel.selectedUser.value != null) {   //add to user searches if logged in
-                                            previousSearchesViewModel.addSearch(
-                                                userViewModel.selectedUser.value!!.username,
-                                                upc,
-                                                packageViewModel.selectedPackage.value!!.name
-                                            )
-                                            userViewModel.addToUserRecyclingCount(userViewModel.selectedUser.value!!.username)
+                                            if (pkg == null) {
+                                                // NOT FOUND
+                                                imageAnalyzer.clearAnalyzer()
+                                                navigateToNotFound(upc)
+
+                                            } else {
+                                                // FOUND
+                                                imageAnalyzer.clearAnalyzer()
+
+                                                if (userViewModel.selectedUser.value != null) {
+                                                    previousSearchesViewModel.addSearch(
+                                                        userViewModel.selectedUser.value!!.username,
+                                                        upc,
+                                                        pkg.name
+                                                    )
+                                                    userViewModel.addToUserRecyclingCount(
+                                                        userViewModel.selectedUser.value!!.username
+                                                    )
+                                                }
+
+                                                requireActivity().supportFragmentManager.beginTransaction()
+                                                    .replace(R.id.fragment_container, ItemDisplayFragment())
+                                                    .addToBackStack(null)
+                                                    .commit()
+                                            }
+
+                                            imageAnalyzer.clearAnalyzer()
                                         }
-
-                                        requireActivity().supportFragmentManager.beginTransaction()
-                                            .replace(
-                                                R.id.fragment_container,
-                                                ItemDisplayFragment()
-                                            ).addToBackStack(null).commit();
-                                    }
-
-                                    imageAnalyzer.clearAnalyzer() // Stop scanning after first match
-
-
-                                    // TODO: Query Supabase database here
-                                    // Placeholder for DB check (always false for now)
-                                    val foundInDatabase = false
-
-                                    if (!foundInDatabase) {
-                                        callUpcApi(upc!!)
                                     }
 
                                     break
@@ -237,95 +229,6 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun callUpcApi(upc: String) {
-
-        Log.d(mlogTag, "Calling UPCitemdb API for $upc")
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.upcitemdb.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(
-            com.example.recyclingapp.network.UpcApiService::class.java
-        )
-
-        service.lookupUpc(upc).enqueue(object : Callback<com.example.recyclingapp.network.UpcResponse> {
-
-            override fun onResponse(
-                call: Call<com.example.recyclingapp.network.UpcResponse>,
-                response: Response<com.example.recyclingapp.network.UpcResponse>
-            ) {
-
-                if (response.isSuccessful && response.body()?.items?.isNotEmpty() == true) {
-
-                    val item = response.body()!!.items[0]
-
-                    val title = item.title ?: "Unknown"
-                    val brand = item.brand ?: "Unknown"
-                    val upc = item.upc ?: "Unknown"
-                    val weight = item.weight ?: "Unknown"
-                    val category = item.category ?: "Unknown"
-                    val imageUrl = item.images?.firstOrNull { it.startsWith("https") }
-
-                    Log.d("IMAGE_DEBUG", "Image URL: $imageUrl")
-
-                    showConfirmationDialog(title, brand, upc, imageUrl)
-
-                } else {
-                    Log.d(mlogTag, "UPC not found in API")
-                    navigateToNotFound(upc)
-                }
-            }
-
-            override fun onFailure(call: Call<com.example.recyclingapp.network.UpcResponse>, t: Throwable) {
-                Log.e(mlogTag, "API call failed", t)
-            }
-        })
-    }
-
-    private fun showConfirmationDialog(
-        title: String,
-        brand: String,
-        upc: String,
-        imageUrl: String?
-    ) {
-
-        val dialogView = layoutInflater.inflate(
-            R.layout.dialog_item_confirmation,
-            null
-        )
-
-        val imageView = dialogView.findViewById<ImageView>(R.id.productImage)
-        val titleView = dialogView.findViewById<TextView>(R.id.productTitle)
-        val brandView = dialogView.findViewById<TextView>(R.id.productBrand)
-        val upcView = dialogView.findViewById<TextView>(R.id.productUpc)
-
-        titleView.text = title
-        brandView.text = "Brand: $brand"
-        upcView.text = "UPC: $upc"
-
-        if (!imageUrl.isNullOrEmpty()) {
-            Glide.with(this)
-                .load(imageUrl)
-                .into(imageView)
-        } else {
-            imageView.visibility = View.GONE
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setPositiveButton("Yes") { _, _ ->
-                // TODO: Later save to Supabase
-            }
-
-            .setNegativeButton("No") { _, _ ->
-                navigateToNotFound(upc)
-            }
-
-            .show()
-    }
-
     private fun navigateToNotFound(upc: String) {
 
         val fragment = ItemNotFoundFragment()
@@ -338,5 +241,17 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    fun <T> androidx.lifecycle.LiveData<T>.observeOnce(
+        owner: androidx.lifecycle.LifecycleOwner,
+        observer: (T) -> Unit
+    ) {
+        observe(owner, object : androidx.lifecycle.Observer<T> {
+            override fun onChanged(t: T) {
+                observer(t)
+                removeObserver(this)
+            }
+        })
     }
 }
