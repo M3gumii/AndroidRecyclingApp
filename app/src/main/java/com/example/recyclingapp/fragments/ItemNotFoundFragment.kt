@@ -19,6 +19,7 @@ import com.example.recyclingapp.viewmodels.database.PackageViewModel
 import com.example.recyclingapp.viewmodels.database.PreviousSearchesViewModel
 import com.example.recyclingapp.viewmodels.database.UserViewModel
 import com.example.recyclingapp.BuildConfig
+import android.widget.ImageView
 
 class ItemNotFoundFragment : Fragment() {
     private val mlogTag: String = "Item Not Found Fragment";
@@ -65,6 +66,10 @@ class ItemNotFoundFragment : Fragment() {
 
         val loadingText: TextView = view.findViewById(R.id.loading_text)
         loadingText.text = "Please wait.\nThe item is being added to the app now!"
+        val titleText: TextView = view.findViewById(R.id.title_text)
+        titleText.text = "Searching for Item..."
+        val itemImage: ImageView = view.findViewById(R.id.item_image)
+        itemImage.setImageResource(R.drawable.loading) // default loading image
 
         val barcodeToAdd = packageViewModel.getAttemptedBarcode()
         Log.d(mlogTag, "ATTEMPTED BARCODE: $barcodeToAdd");
@@ -100,6 +105,8 @@ class ItemNotFoundFragment : Fragment() {
             } else {
                 if (AIViewModel.error.value == null) {
                     loadingText.text = "Item not found in our database.\nPlease try another item."
+                    titleText.text = "Error"
+                    itemImage.setImageResource(R.drawable.error)
                 }
             }
         }
@@ -118,7 +125,27 @@ class ItemNotFoundFragment : Fragment() {
 
         AIViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
             if (errorMsg != null) {
-                loadingText.text = errorMsg
+
+                if (errorMsg.contains("Item not found in OpenFoodFacts.")) {
+                    val fragment = SubmissionFragment()
+
+                    val bundle = Bundle()
+                    bundle.putString("barcode", barcodeToAdd)
+                    fragment.arguments = bundle
+
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit()
+
+                } else {
+                    // Other errors (timeout, 429, etc.)
+                    loadingText.text = errorMsg
+                    titleText.text = "Error"
+                    itemImage.setImageResource(R.drawable.error)
+                }
+
+
             }
         }
     }

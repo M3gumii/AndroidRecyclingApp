@@ -95,6 +95,9 @@ class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
                         is retrofit2.HttpException -> {
                             if (e.code() == 429) {
                                 _error.value = "Too many requests today. Please wait a minute and try again."
+                            }
+                            else if (e.code() == 404) {
+                                _error.value = "Item not found in OpenFoodFacts."
                             } else {
                                 _error.value = "Server error (${e.code()}). Please try again later."
                             }
