@@ -59,10 +59,12 @@ class ItemNotFoundFragment : Fragment() {
      * @requires - the barcode to add is NOT already in the db!
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var aiFinished = false
         super.onViewCreated(view, savedInstanceState)
         Log.d(mlogTag, "OnViewCreated called!")
 
         val loadingText: TextView = view.findViewById(R.id.loading_text)
+        loadingText.text = "Please wait.\nThe item is being added to the app now!"
 
         val barcodeToAdd = packageViewModel.getAttemptedBarcode()
         Log.d(mlogTag, "ATTEMPTED BARCODE: $barcodeToAdd");
@@ -80,6 +82,7 @@ class ItemNotFoundFragment : Fragment() {
             //If a package is found, then it should change this!
 
             Log.d(mlogTag, "PACKAGE FOUND RESP $pkgFound")
+            aiFinished = true
 
             if (pkgFound != null) { //Add the new package to the db!
                 packageViewModel.addPackage(
@@ -94,8 +97,8 @@ class ItemNotFoundFragment : Fragment() {
                     userViewModel.addToUserRecyclingCount(user.username)
                     previousSearchesViewModel.addSearch(user.username, barcodeToAdd, pkgFound.name)
                 }
-            } else {    //AI Can't find the barcode!
-                Toast.makeText(requireContext(), "BARCODE NOT FOUND!", Toast.LENGTH_LONG).show()
+            } else {
+                loadingText.text = "UNABLE TO ADD THE ITEM!\nPLEASE NAVIGATE TO HOME AND TRY AGAIN LATER"
             }
         }
 
@@ -108,8 +111,6 @@ class ItemNotFoundFragment : Fragment() {
                     .replace(R.id.fragment_container, ItemDisplayFragment())
                     .addToBackStack(null)
                     .commit()
-            } else {
-                loadingText.text = "UNABLE TO ADD THE ITEM!\nPLEASE NAVIGATE TO HOME AND TRY AGAIN LATER"
             }
         }
     }
