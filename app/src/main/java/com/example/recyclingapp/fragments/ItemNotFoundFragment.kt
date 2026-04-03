@@ -98,7 +98,9 @@ class ItemNotFoundFragment : Fragment() {
                     previousSearchesViewModel.addSearch(user.username, barcodeToAdd, pkgFound.name)
                 }
             } else {
-                loadingText.text = "UNABLE TO ADD THE ITEM!\nPLEASE NAVIGATE TO HOME AND TRY AGAIN LATER"
+                if (AIViewModel.error.value == null) {
+                    loadingText.text = "Item not found in our database.\nPlease try another item."
+                }
             }
         }
 
@@ -111,6 +113,12 @@ class ItemNotFoundFragment : Fragment() {
                     .replace(R.id.fragment_container, ItemDisplayFragment())
                     .addToBackStack(null)
                     .commit()
+            }
+        }
+
+        AIViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
+            if (errorMsg != null) {
+                loadingText.text = errorMsg
             }
         }
     }

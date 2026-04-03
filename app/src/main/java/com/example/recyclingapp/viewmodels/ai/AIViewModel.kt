@@ -26,6 +26,9 @@ class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
     private val _pkg = MutableLiveData<Package?>()
     val pkg: LiveData<Package?> = _pkg
 
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
+
     private val openFoodFactsApi: OpenFoodFactsApi = OpenFoodFactsContactor.api //Get the retrofit/moshi connection api!
 
     /**
@@ -84,6 +87,23 @@ class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
                     }
                 } catch (e: Exception) {
                     Log.e(mLogTag, "AI lookup failed", e)
+
+                    when (e) {
+                        is java.net.SocketTimeoutException -> {
+                            _error.value = "Request timed out. This may be due to too many requests per minute. Please try again later."
+                        }
+                        is retrofit2.HttpException -> {
+                            if (e.code() == 429) {
+                                _error.value = "Too many requests today. Please wait a minute and try again."
+                            } else {
+                                _error.value = "Server error (${e.code()}). Please try again later."
+                            }
+                        }
+                        else -> {
+                            _error.value = "Network error. Please check your connection."
+                        }
+                    }
+
                     _pkg.value = null;  //On package lookup fail, set the val to null!
                 }
             }
