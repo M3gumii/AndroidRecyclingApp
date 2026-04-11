@@ -51,6 +51,9 @@ android {
 }
 
 dependencies {
+    //password hashing
+    implementation("at.favre.lib:bcrypt:0.10.2")
+
     //Image loading via coil
     implementation("io.coil-kt:coil:2.5.0")
 

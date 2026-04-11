@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.recyclingapp.R
 import com.example.recyclingapp.viewmodels.database.UserViewModel
 import androidx.fragment.app.activityViewModels
+import at.favre.lib.crypto.bcrypt.BCrypt
 import com.example.recyclingapp.MainActivity
 
 class LoginFragment : Fragment(R.layout.login_fragment) {
@@ -48,10 +49,18 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         //Make sure the fragment observes the viewModel!
         userViewModel.selectedUser.observe(viewLifecycleOwner) { user ->
             Log.d(mlogTag, user?.username.toString())
+
             //If selected user changes, check if valid!
             if (user != null) { //Check for validity!
                 Log.d(mlogTag, "User loaded: $user")
-                if(userViewModel.attemptedPassword.equals(user.password)){
+
+                //Check the hashed versions of the passwords...
+                val passwordTheSame = BCrypt.verifyer().verify(
+                    userViewModel.attemptedPassword!!.toCharArray(),
+                    user.password.toCharArray()
+                )
+
+                if(passwordTheSame.verified){
                     Log.d(mlogTag, "USR FOUND: " + user.username);
                     //send to home screen as user was entered!
                     requireActivity().supportFragmentManager.beginTransaction().replace(
@@ -67,7 +76,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         loginButton.setOnClickListener{
             Log.d(mlogTag, "LOGIN CLICKED!")
             userViewModel.attemptedUsername = userBox.text.toString();
-            userViewModel.attemptedPassword = passBox.text.toString();
+            userViewModel.attemptedPassword = passBox.text.toString();  //Unhashed here...
             userViewModel.loadUser();    //Will set off our observer!
         }
 
