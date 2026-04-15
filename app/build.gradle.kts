@@ -10,6 +10,10 @@ plugins {
 }
 
 android {
+    testOptions {
+        animationsDisabled = true
+    }
+
     namespace = "com.example.recyclingapp"
     compileSdk {
         version = release(36)
@@ -52,11 +56,12 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.espresso.contrib)
     // -------------------------
     // UNIT TESTS
     // -------------------------
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
+//    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
@@ -67,6 +72,7 @@ dependencies {
     // -------------------------
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test:rules:1.6.1")
 
@@ -111,6 +117,7 @@ dependencies {
 
     // ML Kit
     implementation("com.google.mlkit:barcode-scanning:17.0.3")
+    implementation("com.google.guava:guava:31.1-android")
 
     // Password hashing
     implementation("at.favre.lib:bcrypt:0.10.2")
