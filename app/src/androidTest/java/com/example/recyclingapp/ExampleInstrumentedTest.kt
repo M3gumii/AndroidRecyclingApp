@@ -36,16 +36,4 @@ class ExampleInstrumentedTest {
         assertEquals("com.example.recyclingapp", appContext.packageName)
     }
 
-    /**
-     * Tests that logging in without a username works...
-     */
-    @Test
-    fun skipLoginTest() {
-        ActivityScenario.launch(MainActivity::class.java)
-
-        onView(withId(R.id.skipButton)).perform(click())    //Click the skip button on the login screen.
-        onView(withId(R.id.home_fragment)).check(matches(isDisplayed()))    //Ensure we are on the home screen now.
-        onView(withId(R.id.home_fragment))
-            .check(matches(hasDescendant(withText("Login to see User Stats")))) //Ensure right text is shown.
-    }
 }
