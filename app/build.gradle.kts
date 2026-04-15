@@ -52,6 +52,19 @@ android {
 
 dependencies {
     //TESTING
+    // Unit test dependencies
+    testImplementation("junit:junit:4.13.2")
+
+    // Instrumented test dependencies
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+
+    // FragmentScenario (must be debugImplementation)
+    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
