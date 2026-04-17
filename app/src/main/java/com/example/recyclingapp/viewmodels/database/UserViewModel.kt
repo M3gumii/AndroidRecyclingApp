@@ -44,7 +44,7 @@ class UserViewModel(private val repo: RecyclingDatabase) : ViewModel() {
         attemptedUsername?.let {    //Run if username not null
             viewModelScope.launch {
                 _selectedUser.value = repo.getUser(attemptedUsername!!) //!! forces to non null. If not crashes prog.
-                Log.d("UserViewModel", "user gained!" + _selectedUser.value?.username)
+//                Log.d("UserViewModel", "user gained!" + _selectedUser.value?.username)
             }
         }
     }

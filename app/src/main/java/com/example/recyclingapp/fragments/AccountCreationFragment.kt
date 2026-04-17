@@ -1,5 +1,6 @@
 package com.example.recyclingapp.fragments
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -58,7 +59,8 @@ class AccountCreationFragment : Fragment(R.layout.account_creation_fragment) {
 
         submitButton.setOnClickListener {
             val username = usernameBox.text.toString()
-            val password = passwordBox.text.toString()
+            val password = BCrypt.withDefaults().hashToString(12, passwordBox.text.toString().toCharArray());
+
             val email = emailBox.text.toString()
             if(!username.isBlank() && !password.isBlank() && !email.isBlank()){
                 userViewModel.attemptedUsername = username; //Check for username used...
