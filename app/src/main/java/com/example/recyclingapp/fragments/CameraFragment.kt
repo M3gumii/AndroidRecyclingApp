@@ -114,22 +114,16 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
 
-            // Barcode scanner options (UPC only)
-            val options = BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(
-                    com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
-                    com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E
-                )
-                .build()
-
-            val scanner = BarcodeScanning.getClient(options)
-
             // Image analysis use case
             val imageAnalyzer = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
 
             imageAnalyzer.setAnalyzer(cameraExecutor) { imageProxy ->
+                if (hasScanned) {
+                    imageProxy.close()
+                    return@setAnalyzer
+                }
 
                 val mediaImage = imageProxy.image
 
@@ -253,5 +247,16 @@ class CameraFragment : Fragment(R.layout.camera_fragment) {
                 removeObserver(this)
             }
         })
+    }
+
+    private val scanner by lazy {
+        val options = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(
+                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
+                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E
+            )
+            .build()
+
+        BarcodeScanning.getClient(options)
     }
 }
