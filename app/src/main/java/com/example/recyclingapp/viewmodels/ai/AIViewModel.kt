@@ -63,28 +63,32 @@ class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
 
                     //Check for the name found!
                     if (item.product?.productName == null || item.status == 0 || item.product == null) {
-                        data = generateNotFoundJson(barcode)
+                        //data = generateNotFoundJson(barcode)
+                        _error.value = "Item not found in OpenFoodFacts."
+                        _pkg.value = null
+                        return@launch
                     }
 
                     if(data == null) {  //A corresponding item was identified from the website!
                         data = ai.lookupItem(item.product!!.productName, barcode, api)   //Find the item via its name
                     }
 
-                    if (!data.getString("barcode").equals("null")) {
-                        val pkgFound = Package(
-                            barcode = barcode,
-                            name = data.getString("name"),
-                            recycling_pos = data.getBoolean("recycling_pos"),
-                            image_link = null,
-                            description = data.getString("description"),
-                            verified = false
-                        )
+                    val pkgFound = Package(
+                        barcode = barcode,
+                        name = data.optString("name", "Unknown"),
+                        recycling_pos = data.optBoolean("recycling_pos", false),
+                        image_link = null,
+                        description = data.optString("description", ""),
+                        verified = false
+                    )
 
-                        _pkg.value = pkgFound
-                    } else {
+                    _pkg.value = pkgFound
+
+                    if (data.getString("name").equals("Unknown")) {
                         Log.d(mLogTag, "Barcode could not be found...")
                         _pkg.value = null;
                     }
+
                 } catch (e: Exception) {
                     Log.e(mLogTag, "AI lookup failed", e)
 
@@ -109,6 +113,47 @@ class AIViewModel(private val api: AIRetrofitApi): ViewModel() {
 
                     _pkg.value = null;  //On package lookup fail, set the val to null!
                 }
+            }
+        }
+    }
+
+    fun submitManualPackage(
+        barcode: String,
+        name: String,
+        brand: String,
+        description: String
+    ) {
+        viewModelScope.launch {
+            try {
+                val data = ai.lookupItem(
+                    name = name,
+                    barcode = barcode,
+                    api = api,
+                    brand = brand,
+                    userDescription = description
+                )
+
+                val aiBarcode = data.opt("barcode") // safer
+
+                val pkgFound = Package(
+                    barcode = barcode, // ALWAYS use real scanned barcode
+                    name = data.optString("name", name),
+                    recycling_pos = data.optBoolean("recycling_pos", false),
+                    image_link = null,
+                    description = data.optString("description", ""),
+                    verified = false
+                )
+
+                _pkg.value = pkgFound
+
+                if (aiBarcode == null || aiBarcode.toString() == "null") {
+                    _error.value = "LOW_CONFIDENCE"
+                }
+
+            } catch (e: Exception) {
+                Log.e(mLogTag, "Manual AI lookup failed", e)
+                _error.value = "AI request failed"
+                _pkg.value = null
             }
         }
     }

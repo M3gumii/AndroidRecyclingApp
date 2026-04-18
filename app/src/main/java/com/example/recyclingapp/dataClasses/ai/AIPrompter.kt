@@ -19,12 +19,22 @@ class AIPrompter {
      *
      * AIRetrofitApi created from AIContactor!
      */
-    suspend fun lookupItem(name: String?, barcode: String, api: AIRetrofitApi): JSONObject {
+    suspend fun lookupItem(name: String?, barcode: String, api: AIRetrofitApi, brand: String? = null, userDescription: String? = null): JSONObject {
+        val extraContext = buildString {
+            if (!brand.isNullOrBlank()) {
+                append("\n- Brand: $brand")
+            }
+            if (!userDescription.isNullOrBlank()) {
+                append("\n- Packaging description: $userDescription")
+            }
+        }
+
         val prompt = """
         You are a packaging inference engine.
         
         You will be given:
         - A product name
+        $extraContext
         
         Your job is to infer the packaging material and recyclability based ONLY on the 
         product name and Columbus, OH recycling rules.
@@ -48,6 +58,7 @@ class AIPrompter {
         - Do NOT change or guess the product name.
         - If packaging information is missing/you cannot tell how to recycle the item, 
             set the barcode field to NULL!
+        - If additional packaging description is provided, prioritize it over assumptions from product name.
     """.trimIndent()
 
         val request = AIRequest(
